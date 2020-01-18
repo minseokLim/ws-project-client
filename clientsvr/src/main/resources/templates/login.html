@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title>로그인</title>
+	</head>
+	<body>
+	   <div style="text-align: center;">
+	       <h2>로그인</h2>
+	       <a class="btn_social" data-social="facebook">
+	           <img th:src="@{/images/facebook.png}" width="40px" height="40px">
+	       </a>
+	       <a class="btn_social" data-social="google">
+               <img th:src="@{/images/google.png}" width="40px" height="40px">
+           </a>
+           <a class="btn_social" data-social="kakao">
+               <img th:src="@{/images/kakao.png}" width="40px" height="40px">
+           </a>
+	   </div>
+	   
+	   <script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+	   <script>
+	       $('.btn_social').click(function() {
+	    	  var socialType = $(this).data('social');
+	    	  location.href = "/oauth2/authorization/" + socialType;
+	       });
+	   </script>
+	</body>
+</html>

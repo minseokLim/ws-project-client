@@ -1,0 +1,24 @@
+server:
+  port: 8081
+
+spring:
+  thymeleaf:
+    cache: false
+  security:
+    oauth2:
+      client:
+        registration:
+          facebook:
+            client-id: "{cipher}be24bcce6ed5a9ae153edf2483ccde0f84f7e1490c7c5d0bf7b03f70318b82116d484137e1c550db8f78b867e56306af"
+            client-secret: "{cipher}838598403ad67c68a5f8121c059d7d0d470b4055881b3f91f46a3c03ffcd037dac2f53c9a8866cd97535a4913f21ab192597831280b3447e68d64ff4c2872bc8"            
+          google:
+            client-id: "{cipher}59dc7a1669f27c3eefc04000fd112e714fd3ff7f15186cef7a57b6bf8ae682eea29e89054d43171f30d4eb0d75982e281a7dc1600d3888d27423ce70c521920e4577d0abce8822f7e749f9f0b2bc299eefe93093d60e9aa6293a8c8efd578ab5"
+            client-secret: "{cipher}ff3f6a17b0cf2ea04cf7831dae0c1218cb5d79084fd1b52e3f307730a8a2681632481626551f528b01a3fe363ac93333"
+          kakao:
+            client-id: "{cipher}7d82b57035536bf4949b09c02e0bd1a16d7b0addaf6055e7f85b7249363a54b48c5ac21c36def9a721398e091f1f25ef0495846ceb762b64c0a9095f4a9f46d5"
+                    
+custom:
+  admin-emails:
+    - mslim8803@naver.com
+    - ddalgu2@gmail.com
+    - ddalgu2@naver.com

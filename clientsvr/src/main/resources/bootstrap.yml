@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: clientsvr
+  cloud:
+    config:
+      enabled: false

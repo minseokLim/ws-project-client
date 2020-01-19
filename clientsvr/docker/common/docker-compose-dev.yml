@@ -1,0 +1,9 @@
+version: "3"
+services:
+  clientsvr:
+    image: ws-project/clientsvr:1
+    ports:
+      - 8081:8081
+    environment:
+      PROFILE: "dev"
+      ENCRYPT_KEY: ${ENCRYPT_KEY}

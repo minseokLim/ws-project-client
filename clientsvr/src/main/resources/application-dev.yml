@@ -27,4 +27,4 @@ custom:
     - mslim8803@naver.com
     - ddalgu2@gmail.com
     - ddalgu2@naver.com
-  api-gateway-ip: http://localhost:5555
+  api-gateway-ip: http://zuulsvr:5555

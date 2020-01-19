@@ -69,14 +69,14 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
                 
                 try {
                 	UriComponentsBuilder builder 
-                		= UriComponentsBuilder.fromHttpUrl("http://localhost:5555/api/user-service/v1.0/users/search/findByPrincipalAndSocialType")
+                		= UriComponentsBuilder.fromHttpUrl(customProperties.getApiGatewayIp() + "/api/user-service/v1.0/users/search/findByPrincipalAndSocialType")
                 			.queryParam("principal", convertedUser.getPrincipal())
                 			.queryParam("socialType", convertedUser.getSocialType().getValue().toUpperCase());
                 	
                 	user = restTemplate.getForObject(builder.toUriString(), User.class);
                 	
 				} catch (HttpClientErrorException.NotFound e) {
-					user = restTemplate.postForObject("http://localhost:5555/api/user-service/v1.0/users", convertedUser, User.class);
+					user = restTemplate.postForObject(customProperties.getApiGatewayIp() + "/api/user-service/v1.0/users", convertedUser, User.class);
 				}
                
                 setRoleIfNotSame(user, authentication, map);

@@ -1,6 +1,11 @@
 server:
   port: 8081
 
+logging:
+  level:
+    com:
+      wsproject: debug
+      
 spring:
   thymeleaf:
     cache: false

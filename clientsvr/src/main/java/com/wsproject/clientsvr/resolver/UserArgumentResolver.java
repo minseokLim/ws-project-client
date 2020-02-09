@@ -61,9 +61,9 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
                 Map<String, Object> map = authentication.getPrincipal().getAttributes();
                 User convertedUser = convertUser(authentication.getAuthorizedClientRegistrationId(), map);
                 
-                Map<String, String> param = new HashMap<String, String>();
-                param.put("principal", convertedUser.getPrincipal());
-                param.put("socialType", convertedUser.getSocialType().getValue().toUpperCase());
+//                Map<String, String> param = new HashMap<String, String>();
+//                param.put("principal", convertedUser.getPrincipal());
+//                param.put("socialType", convertedUser.getSocialType().getValue().toUpperCase());
                 
                 RestTemplate restTemplate = new RestTemplate();
                 

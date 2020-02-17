@@ -4,6 +4,7 @@ public enum RoleType {
 	ADMIN("ADMIN"),
 	USER("USER");
 	
+	private final static String prefix = "ROLE_";
 	private String name;
 	
 	RoleType(String name) {
@@ -11,6 +12,6 @@ public enum RoleType {
 	}
 	
 	public String getValue() {
-		return name;
+		return prefix + name;
 	}
 }

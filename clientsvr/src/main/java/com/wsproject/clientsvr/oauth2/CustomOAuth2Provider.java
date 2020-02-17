@@ -6,24 +6,26 @@ import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 
 public enum CustomOAuth2Provider {
-	 
-	KAKAO {
+	
+	WS_PROJECT {
 
 		@Override
 		public Builder getBuilder(String registrationId) {
 			ClientRegistration.Builder builder = getBuilder(registrationId, ClientAuthenticationMethod.POST, DEFAULT_REDIRECT_URL);
             builder.scope("profile");
-            builder.authorizationUri("https://kauth.kakao.com/oauth/authorize");
-            builder.tokenUri("https://kauth.kakao.com/oauth/token");
-            builder.userInfoUri("https://kapi.kakao.com/v1/user/me");
-            builder.userNameAttributeName("id");
-            builder.clientName("Kakao");
+            builder.authorizationUri(AUTH_SERVER_URL + "/oauth/authorize");
+            builder.tokenUri(AUTH_SERVER_URL + "/oauth/token");
+            builder.userInfoUri("http://localhost:8082/v1.0/users/me");
+            builder.userNameAttributeName("idx");
+            builder.clientName("WS-Project");
 			return builder;
 		}		 
 	};
-
-	private static final String DEFAULT_REDIRECT_URL = "{baseUrl}/{action}/oauth2/code/{registrationId}";
-
+	
+	private static final String AUTH_SERVER_URL = "http://localhost:8901";
+	private static final String DEFAULT_REDIRECT_URL = "{baseUrl}/{action}/oauth2/code";
+//	private static final String DEFAULT_REDIRECT_URL = "{baseUrl}/{action}/oauth2/code/{registrationId}";
+	
 	protected final ClientRegistration.Builder getBuilder(String registrationId, ClientAuthenticationMethod method, String redirectUri) {
 		ClientRegistration.Builder builder = ClientRegistration.withRegistrationId(registrationId);
 		builder.clientAuthenticationMethod(method);

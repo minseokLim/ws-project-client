@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.oauth2.client.CommonOAuth2Provider;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
@@ -30,10 +29,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		
 		// TODO 권한별 허용 url 설정 필요(ADMIN, USER)
 		http.authorizeRequests()
-				.antMatchers("/", "/login/**", "/css/**", "/images/**", "/js/**").permitAll()
+				.antMatchers("/login/**", "/oauth2/**").permitAll()
 				.anyRequest().authenticated()
 			.and()
 				.oauth2Login()
+				.loginPage("/login")
 				.defaultSuccessUrl("/loginSuccess")
 				.failureUrl("/loginFailure")
 			.and()
@@ -67,25 +67,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	private ClientRegistration getRegistration(OAuth2ClientProperties oAuth2ClientProperties, String client) {
 		OAuth2ClientProperties.Registration registration = oAuth2ClientProperties.getRegistration().get(client);
-
-		if("facebook".equals(client)) {
-			return CommonOAuth2Provider.FACEBOOK.getBuilder(client)
-					.clientId(registration.getClientId())
-					.clientSecret(registration.getClientSecret())
-					// picture을 받아오기 위해 별도로 userInfoUri 설정
-					.userInfoUri("https://graph.facebook.com/me?fields=id,name,email,picture")
-					.build();
-		} else if("google".equals(client)) {
-			return CommonOAuth2Provider.GOOGLE.getBuilder(client)
-					.clientId(registration.getClientId())
-					.clientSecret(registration.getClientSecret())
-					.build();
-		} else if("kakao".equals(client)) {
-			return CustomOAuth2Provider.KAKAO.getBuilder(client)
-					.clientId(registration.getClientId())
-					.build();
-		}
 		
-		return null;
+		return CustomOAuth2Provider.WS_PROJECT.getBuilder(client)
+				.clientId(registration.getClientId())
+				.clientSecret(registration.getClientSecret())
+				.build();
 	}
 }

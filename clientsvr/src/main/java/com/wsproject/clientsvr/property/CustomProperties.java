@@ -13,6 +13,5 @@ import lombok.Setter;
 @Setter
 @ConfigurationProperties(prefix = "custom")
 public class CustomProperties {
-	List<String> adminEmails;
 	String apiGatewayIp;
 }

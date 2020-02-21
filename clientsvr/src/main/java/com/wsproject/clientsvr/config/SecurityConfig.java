@@ -17,11 +17,15 @@ import org.springframework.security.web.authentication.LoginUrlAuthenticationEnt
 import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
-import com.wsproject.clientsvr.oauth2.CustomOAuth2Provider;
+import com.wsproject.clientsvr.oauth2.OAuth2Provider;
+
+import lombok.AllArgsConstructor;
 
 @Configuration
+@AllArgsConstructor
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+	private OAuth2Provider oAuth2Provider;
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -68,7 +72,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private ClientRegistration getRegistration(OAuth2ClientProperties oAuth2ClientProperties, String client) {
 		OAuth2ClientProperties.Registration registration = oAuth2ClientProperties.getRegistration().get(client);
 		
-		return CustomOAuth2Provider.WS_PROJECT.getBuilder(client)
+		return oAuth2Provider.getBuilder(client)
 				.clientId(registration.getClientId())
 				.clientSecret(registration.getClientSecret())
 				.build();

@@ -4,28 +4,32 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.client.registration.ClientRegistration.Builder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
+import org.springframework.stereotype.Component;
 
-public enum CustomOAuth2Provider {
-	
-	WS_PROJECT {
+import com.wsproject.clientsvr.property.CustomProperties;
 
-		@Override
-		public Builder getBuilder(String registrationId) {
-			ClientRegistration.Builder builder = getBuilder(registrationId, ClientAuthenticationMethod.POST, DEFAULT_REDIRECT_URL);
-            builder.scope("profile");
-            builder.authorizationUri(AUTH_SERVER_URL + "/oauth/authorize");
-            builder.tokenUri(AUTH_SERVER_URL + "/oauth/token");
-            builder.userInfoUri("http://localhost:8082/v1.0/users/me");
-            builder.userNameAttributeName("idx");
-            builder.clientName("WS-Project");
-			return builder;
-		}		 
-	};
+import lombok.AllArgsConstructor;
+
+@Component
+@AllArgsConstructor
+public class OAuth2Provider {
 	
-	private static final String AUTH_SERVER_URL = "http://localhost:8901";
 	private static final String DEFAULT_REDIRECT_URL = "{baseUrl}/{action}/oauth2/code";
 //	private static final String DEFAULT_REDIRECT_URL = "{baseUrl}/{action}/oauth2/code/{registrationId}";
 	
+	private CustomProperties customProperties;
+	
+	public Builder getBuilder(String registrationId) {
+		ClientRegistration.Builder builder = getBuilder(registrationId, ClientAuthenticationMethod.POST, DEFAULT_REDIRECT_URL);
+        builder.scope("profile");
+        builder.authorizationUri(customProperties.getAuthServerIp() + "/oauth/authorize");
+        builder.tokenUri(customProperties.getApiGatewayIp() + "/api/authsvr/oauth/token");
+        builder.userInfoUri(customProperties.getApiGatewayIp() + "/api/user-service/v1.0/users/me");
+        builder.userNameAttributeName("idx");
+        builder.clientName("WS-Project");
+		return builder;
+	}		 
+
 	protected final ClientRegistration.Builder getBuilder(String registrationId, ClientAuthenticationMethod method, String redirectUri) {
 		ClientRegistration.Builder builder = ClientRegistration.withRegistrationId(registrationId);
 		builder.clientAuthenticationMethod(method);
@@ -33,6 +37,4 @@ public enum CustomOAuth2Provider {
 		builder.redirectUriTemplate(redirectUri);
 		return builder;
 	}
-
-	public abstract ClientRegistration.Builder getBuilder(String registrationId);
 }

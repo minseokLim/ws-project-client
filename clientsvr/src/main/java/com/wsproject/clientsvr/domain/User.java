@@ -1,8 +1,14 @@
 package com.wsproject.clientsvr.domain;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import com.wsproject.clientsvr.domain.enums.SocialType;
 
@@ -12,8 +18,10 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class User {
-		
+public class User implements Serializable {
+	
+	private static final long serialVersionUID = 6510441028359513508L;
+	
 	private Long idx;
 	
 	private String name;
@@ -31,7 +39,13 @@ public class User {
 	private List<String> roles = new ArrayList<String>();
 	
 	private LocalDateTime createdDate;
-
+	
+	private LocalDateTime modifiedDate;
+	
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return this.roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+	}
+	
 	@Builder
 	public User(Long idx, String name, String email, String principal, SocialType socialType, String pictureUrl,
 			String uid, List<String> roles, LocalDateTime createdDate) {

@@ -1,7 +1,5 @@
 package com.wsproject.clientsvr.property;
 
-import java.util.List;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -14,4 +12,5 @@ import lombok.Setter;
 @ConfigurationProperties(prefix = "custom")
 public class CustomProperties {
 	String apiGatewayIp;
+	String authServerIp;
 }

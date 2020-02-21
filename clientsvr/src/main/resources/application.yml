@@ -1,10 +1,8 @@
 server:
   port: 8081
 
-logging:
-  level:
-    com:
-      wsproject: debug
+#logging:
+#  level:    
 #    org:
 #      springframework: debug
       
@@ -21,4 +19,5 @@ spring:
                     
 custom:
   api-gateway-ip: http://localhost:5555
+  auth-server-ip: http://localhost:8901
   

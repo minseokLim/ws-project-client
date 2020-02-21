@@ -23,8 +23,5 @@ spring:
             client-id: "{cipher}7d82b57035536bf4949b09c02e0bd1a16d7b0addaf6055e7f85b7249363a54b48c5ac21c36def9a721398e091f1f25ef0495846ceb762b64c0a9095f4a9f46d5"
                     
 custom:
-  admin-emails:
-    - mslim8803@naver.com
-    - ddalgu2@gmail.com
-    - ddalgu2@naver.com
   api-gateway-ip: http://zuulsvr:5555
+  auth-server-ip: http://authsvr:8901

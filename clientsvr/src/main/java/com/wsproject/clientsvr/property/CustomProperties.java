@@ -11,6 +11,6 @@ import lombok.Setter;
 @Setter
 @ConfigurationProperties(prefix = "custom")
 public class CustomProperties {
-	String apiGatewayIp;
-	String authServerIp;
+	String apiBaseUri;
+	String authsvrBaseUri;
 }

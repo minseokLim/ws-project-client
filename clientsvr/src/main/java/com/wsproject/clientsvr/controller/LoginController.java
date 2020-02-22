@@ -41,7 +41,7 @@ public class LoginController {
 	
 	private OAuth2ClientProperties oAuth2ClientProperties;
 	
-	private CustomProperties customProperties;
+	private CustomProperties properties;
 	
 	@GetMapping("/login")
 	public String login() {
@@ -76,7 +76,7 @@ public class LoginController {
 		
 		HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(params, headers);
 		
-		ResponseEntity<String> response = restTemplate.postForEntity(customProperties.getApiGatewayIp() + "/api/authsvr/oauth/token", entity, String.class);
+		ResponseEntity<String> response = restTemplate.postForEntity(properties.getApiBaseUri() + "/authsvr/oauth/token", entity, String.class);
 		
 		if(response.getStatusCode() == HttpStatus.OK) {
 			OAuthToken token = gson.fromJson(response.getBody(), OAuthToken.class);
@@ -85,7 +85,7 @@ public class LoginController {
 			headers.add("Authorization", "Bearer " + token.getAccess_token());
 			entity = new HttpEntity<>(headers);
 			
-			response = restTemplate.exchange(customProperties.getApiGatewayIp() + "/api/user-service/v1.0/users/me", HttpMethod.GET, entity, String.class);
+			response = restTemplate.exchange(properties.getApiBaseUri() + "/user-service/v1.0/users/me", HttpMethod.GET, entity, String.class);
 			
 			if(response.getStatusCode() == HttpStatus.OK) {
 				User user = gson.fromJson(response.getBody(), User.class);

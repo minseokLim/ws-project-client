@@ -17,14 +17,14 @@ public class OAuth2Provider {
 	private static final String DEFAULT_REDIRECT_URL = "{baseUrl}/{action}/oauth2/code";
 //	private static final String DEFAULT_REDIRECT_URL = "{baseUrl}/{action}/oauth2/code/{registrationId}";
 	
-	private CustomProperties customProperties;
+	private CustomProperties properties;
 	
 	public Builder getBuilder(String registrationId) {
 		ClientRegistration.Builder builder = getBuilder(registrationId, ClientAuthenticationMethod.POST, DEFAULT_REDIRECT_URL);
         builder.scope("profile");
-        builder.authorizationUri(customProperties.getAuthServerIp() + "/oauth/authorize");
-        builder.tokenUri(customProperties.getApiGatewayIp() + "/api/authsvr/oauth/token");
-        builder.userInfoUri(customProperties.getApiGatewayIp() + "/api/user-service/v1.0/users/me");
+        builder.authorizationUri(properties.getAuthsvrBaseUri() + "/oauth/authorize");
+        builder.tokenUri(properties.getApiBaseUri() + "/authsvr/oauth/token");
+        builder.userInfoUri(properties.getApiBaseUri() + "/user-service/v1.0/users/me");
         builder.userNameAttributeName("idx");
         builder.clientName("WS-Project");
 		return builder;

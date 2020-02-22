@@ -24,7 +24,7 @@ import lombok.AllArgsConstructor;
 @Configuration
 @AllArgsConstructor
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	private OAuth2Provider oAuth2Provider;
 	
 	@Override
@@ -38,16 +38,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.and()
 				.oauth2Login()
 				.loginPage("/login")
-				.defaultSuccessUrl("/loginSuccess")
-				.failureUrl("/loginFailure")
+				.defaultSuccessUrl("/loginCompleted")
+				.failureUrl("/error")
 			.and()
 				.headers().frameOptions().disable()
 			.and()
 				.exceptionHandling()
 				.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"))
-//			.and()
-//				.formLogin()
-//				.successForwardUrl("/formLoginSuccess")
 			.and()
 				.logout()
 				.logoutUrl("/logout")

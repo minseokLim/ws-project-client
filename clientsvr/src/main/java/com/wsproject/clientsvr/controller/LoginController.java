@@ -48,14 +48,15 @@ public class LoginController {
 		return "redirect:/oauth2/authorization/ws-project";
 	}
 	
-	@GetMapping("/loginSuccess")
-    public String loginComplete(HttpServletRequest request, Model model) {
+	@GetMapping("/loginCompleted")
+    public String loginCompleted(HttpServletRequest request, Model model) {
 		HttpSession session = request.getSession();
 		User user = (User) session.getAttribute("user");
 		
 		model.addAttribute("name", user.getName());
+		model.addAttribute("socialType", user.getSocialType().getValue().toUpperCase());
 		
-        return "loginSuccess";
+        return "loginCompleted";
     }
 	
 	@GetMapping("/login/oauth2/code")
@@ -81,6 +82,9 @@ public class LoginController {
 		if(response.getStatusCode() == HttpStatus.OK) {
 			OAuthToken token = gson.fromJson(response.getBody(), OAuthToken.class);
 			
+			log.debug("access_token : {}", token.getAccess_token());
+			log.debug("refresh_token : {}", token.getRefresh_token());
+			
 			headers = new HttpHeaders();
 			headers.add("Authorization", "Bearer " + token.getAccess_token());
 			entity = new HttpEntity<>(headers);
@@ -98,6 +102,6 @@ public class LoginController {
 			}		
 		}
 			
-		return "redirect:/loginSuccess";
+		return "redirect:/loginCompleted";
 	}
 }

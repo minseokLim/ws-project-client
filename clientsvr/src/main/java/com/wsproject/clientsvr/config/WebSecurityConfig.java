@@ -31,7 +31,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		CharacterEncodingFilter filter = new CharacterEncodingFilter("UTF-8");
 		
-		// TODO 권한별 허용 url 설정 필요(ADMIN, USER)
 		http.authorizeRequests()
 				.antMatchers("/login/**", "/oauth2/**").permitAll()
 				.anyRequest().authenticated()
@@ -39,7 +38,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.oauth2Login()
 				.loginPage("/login")
 				.defaultSuccessUrl("/loginCompleted")
-				.failureUrl("/error")
+				.failureUrl("/loginFailed")
 			.and()
 				.headers().frameOptions().disable()
 			.and()

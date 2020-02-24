@@ -89,8 +89,7 @@ public class CommonUtil {
 		
 		HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(params, headers);
 		
-//		ResponseEntity<String> responseEntity = restTemplate.postForEntity(properties.getApiBaseUri() + "/authsvr/oauth/token", entity, String.class);
-		ResponseEntity<String> responseEntity = restTemplate.postForEntity("http://localhost:8901/oauth/token", entity, String.class);
+		ResponseEntity<String> responseEntity = restTemplate.postForEntity(properties.getApiBaseUri() + "/authsvr/oauth/token", entity, String.class);
 		
 		addCookie("tokenInfo", responseEntity.getBody());
 		

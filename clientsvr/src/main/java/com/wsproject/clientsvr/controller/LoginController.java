@@ -19,6 +19,7 @@ import com.wsproject.clientsvr.domain.User;
 import com.wsproject.clientsvr.dto.TokenInfo;
 import com.wsproject.clientsvr.dto.UserInfo;
 import com.wsproject.clientsvr.service.RestService;
+import com.wsproject.clientsvr.util.AES256Util;
 import com.wsproject.clientsvr.util.CommonUtil;
 
 import lombok.AllArgsConstructor;
@@ -30,6 +31,8 @@ public class LoginController {
 	private Gson gson;
 	
 	private CommonUtil commonUtil;
+	
+	private AES256Util aes256Util;
 	
 	private RestService restService;
 	
@@ -45,10 +48,16 @@ public class LoginController {
 	
 	@GetMapping("/loginCompleted")
     public String loginCompleted(@CookieValue("userInfo") String userCookie, Model model) {
-		UserInfo userInfo = gson.fromJson(userCookie, UserInfo.class);
 		
-		model.addAttribute("name", userInfo.getName());
-		model.addAttribute("socialType", userInfo.getSocialType().getValue().toUpperCase());
+		try {
+			UserInfo userInfo = gson.fromJson(aes256Util.decrypt(userCookie), UserInfo.class);
+			
+			model.addAttribute("name", userInfo.getName());
+			model.addAttribute("socialType", userInfo.getSocialType().getValue().toUpperCase());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "redirect:/loginFailed";
+		}
 		
         return "loginCompleted";
     }
@@ -57,13 +66,18 @@ public class LoginController {
 	public String actionLogin(@RequestParam("code") String code, HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
 		String redirectUri = request.getRequestURL().toString();
 		
-		TokenInfo tokenInfo = restService.getTokenInfo(code, redirectUri, null, false);
-		
-		ResponseEntity<String> responseEntity = restService.getForEntity("/user-service/v1.0/users/me", tokenInfo);
-		User user = gson.fromJson(responseEntity.getBody(), User.class);
-		
-		SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(user.getIdx(), "N/A", user.getAuthorities()));
-		commonUtil.addCookie("userInfo", gson.toJson(new UserInfo(user)));
+		try {
+			TokenInfo tokenInfo = restService.getTokenInfo(code, redirectUri, null, false);
+			
+			ResponseEntity<String> responseEntity = restService.getForEntity("/user-service/v1.0/users/me", tokenInfo);
+			User user = gson.fromJson(responseEntity.getBody(), User.class);
+			
+			SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(user.getIdx(), "N/A", user.getAuthorities()));
+			commonUtil.addCookie("userInfo", gson.toJson(new UserInfo(user)));
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "redirect:/loginFailed";
+		}
 		
 		return "redirect:/loginCompleted";
 	}

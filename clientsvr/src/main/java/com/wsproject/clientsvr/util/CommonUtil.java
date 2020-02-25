@@ -1,30 +1,30 @@
 package com.wsproject.clientsvr.util;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import lombok.AllArgsConstructor;
+
 @Component
+@AllArgsConstructor
 public class CommonUtil {
 
-	@Value("${encrypt.key}")
-	private String encryptKey;
+	private AES256Util aes256Util;
 	
-	public void addCookie(String name, String value) throws UnsupportedEncodingException {
+	public void addCookie(String name, String value) throws Exception {
 		addCookie(name, value, "/");
 	}
 	
-	public void addCookie(String name, String value, String path) throws UnsupportedEncodingException {
+	public void addCookie(String name, String value, String path) throws Exception {
 		HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
 		
-		Cookie cookie = new Cookie(name, URLEncoder.encode(value, "UTF-8"));
+		Cookie cookie = new Cookie(name, URLEncoder.encode(aes256Util.encrypt(value), "UTF-8"));
 		cookie.setPath(path);
 		response.addCookie(cookie);
 	}

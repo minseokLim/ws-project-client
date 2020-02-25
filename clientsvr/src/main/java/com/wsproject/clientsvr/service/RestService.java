@@ -1,7 +1,5 @@
 package com.wsproject.clientsvr.service;
 
-import java.io.UnsupportedEncodingException;
-
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientProperties;
 import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientProperties.Registration;
@@ -39,7 +37,7 @@ public class RestService {
 	
 	private CommonUtil commonUtil;
 	
-	public ResponseEntity<String> getForEntity(String url, TokenInfo tokenInfo) throws UnsupportedEncodingException {
+	public ResponseEntity<String> getForEntity(String url, TokenInfo tokenInfo) throws Exception {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Authorization", "Bearer " + tokenInfo.getAccess_token());
 		HttpEntity<Void> entity = new HttpEntity<>(headers);
@@ -59,7 +57,7 @@ public class RestService {
 		return responseEntity;
 	}
 	
-	public TokenInfo getTokenInfo(String code, String redirectUri, String refreshToken, boolean refresh) throws UnsupportedEncodingException {
+	public TokenInfo getTokenInfo(String code, String redirectUri, String refreshToken, boolean refresh) throws Exception {
 		Registration registration = (Registration) oAuth2ClientProperties.getRegistration().values().toArray()[0];
 		String credentials = registration.getClientId() + ":" + registration.getClientSecret();
 		String encodedCredentials = new String(Base64.encodeBase64(credentials.getBytes()));

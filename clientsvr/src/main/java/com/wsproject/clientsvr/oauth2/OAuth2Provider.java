@@ -21,7 +21,7 @@ public class OAuth2Provider {
 	
 	public Builder getBuilder(String registrationId) {
 		ClientRegistration.Builder builder = getBuilder(registrationId, ClientAuthenticationMethod.POST, DEFAULT_REDIRECT_URL);
-        builder.scope("profile");
+        builder.scope("mobile");
         builder.authorizationUri(properties.getAuthsvrBaseUri() + "/oauth/authorize");
         builder.tokenUri(properties.getApiBaseUri() + "/authsvr/oauth/token");
         builder.userInfoUri(properties.getApiBaseUri() + "/user-service/v1.0/users/me");

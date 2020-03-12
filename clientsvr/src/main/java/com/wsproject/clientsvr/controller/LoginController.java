@@ -18,6 +18,7 @@ import com.google.gson.Gson;
 import com.wsproject.clientsvr.domain.User;
 import com.wsproject.clientsvr.dto.TokenInfo;
 import com.wsproject.clientsvr.dto.UserInfo;
+import com.wsproject.clientsvr.property.CustomProperties;
 import com.wsproject.clientsvr.service.RestService;
 import com.wsproject.clientsvr.util.AES256Util;
 import com.wsproject.clientsvr.util.CommonUtil;
@@ -35,6 +36,8 @@ public class LoginController {
 	private AES256Util aes256Util;
 	
 	private RestService restService;
+	
+	private CustomProperties properties;
 	
 	@GetMapping("/login")
 	public String login() {
@@ -69,7 +72,7 @@ public class LoginController {
 		try {
 			TokenInfo tokenInfo = restService.getTokenInfo(code, redirectUri, null, false);
 			
-			ResponseEntity<String> responseEntity = restService.getForEntity("/user-service/v1.0/users/me", tokenInfo);
+			ResponseEntity<String> responseEntity = restService.getForEntity(properties.getApiBaseUri() + "/user-service/v1.0/users/me", tokenInfo);
 			User user = gson.fromJson(responseEntity.getBody(), User.class);
 			
 			SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(user.getIdx(), "N/A", user.getAuthorities()));

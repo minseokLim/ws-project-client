@@ -39,19 +39,19 @@ public class RestService {
 	
 	public ResponseEntity<String> getForEntity(String url, TokenInfo tokenInfo) throws Exception {
 		HttpHeaders headers = new HttpHeaders();
-		headers.add("Authorization", "Bearer " + tokenInfo.getAccess_token());
+		headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + tokenInfo.getAccess_token());
 		HttpEntity<Void> entity = new HttpEntity<>(headers);
 		ResponseEntity<String> responseEntity;
 		
 		try {
-			responseEntity = restTemplate.exchange(properties.getApiBaseUri() + url, HttpMethod.GET, entity, String.class);
+			responseEntity = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
 		} catch (HttpClientErrorException.Unauthorized e) {
 			tokenInfo = getTokenInfo(null, null, tokenInfo.getRefresh_token(), true);
 			
 			headers = new HttpHeaders();
-			headers.add("Authorization", "Bearer " + tokenInfo.getAccess_token());
+			headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + tokenInfo.getAccess_token());
 			entity = new HttpEntity<>(headers);
-			responseEntity = restTemplate.exchange(properties.getApiBaseUri() + url, HttpMethod.GET, entity, String.class);
+			responseEntity = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
 		}
 		
 		return responseEntity;
@@ -65,7 +65,7 @@ public class RestService {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 		headers.add("Accept", MediaType.APPLICATION_JSON_VALUE);
-		headers.add("Authorization", "Basic " + encodedCredentials);
+		headers.add(HttpHeaders.AUTHORIZATION, "Basic " + encodedCredentials);
 		
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
 		

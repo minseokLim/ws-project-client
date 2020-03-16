@@ -15,7 +15,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class CommonUtil {
 
-	private AES256Util aes256Util;
+	private AESUtil aesUtil;
 	
 	public void addCookie(String name, String value) throws Exception {
 		addCookie(name, value, "/");
@@ -24,7 +24,7 @@ public class CommonUtil {
 	public void addCookie(String name, String value, String path) throws Exception {
 		HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
 		
-		Cookie cookie = new Cookie(name, URLEncoder.encode(aes256Util.encrypt(value), "UTF-8"));
+		Cookie cookie = new Cookie(name, URLEncoder.encode(aesUtil.encrypt(value), "UTF-8"));
 		cookie.setPath(path);
 		response.addCookie(cookie);
 	}

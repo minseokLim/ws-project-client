@@ -20,7 +20,7 @@ import com.wsproject.clientsvr.dto.TokenInfo;
 import com.wsproject.clientsvr.dto.UserInfo;
 import com.wsproject.clientsvr.property.CustomProperties;
 import com.wsproject.clientsvr.service.RestService;
-import com.wsproject.clientsvr.util.AES256Util;
+import com.wsproject.clientsvr.util.AESUtil;
 import com.wsproject.clientsvr.util.CommonUtil;
 
 import lombok.AllArgsConstructor;
@@ -33,7 +33,7 @@ public class LoginController {
 	
 	private CommonUtil commonUtil;
 	
-	private AES256Util aes256Util;
+	private AESUtil aesUtil;
 	
 	private RestService restService;
 	
@@ -53,7 +53,7 @@ public class LoginController {
     public String loginCompleted(@CookieValue("userInfo") String userCookie, Model model) {
 		
 		try {
-			UserInfo userInfo = gson.fromJson(aes256Util.decrypt(userCookie), UserInfo.class);
+			UserInfo userInfo = gson.fromJson(aesUtil.decrypt(userCookie), UserInfo.class);
 			
 			model.addAttribute("name", userInfo.getName());
 			model.addAttribute("socialType", userInfo.getSocialType().getValue().toUpperCase());
@@ -82,6 +82,6 @@ public class LoginController {
 			return "redirect:/loginFailed";
 		}
 		
-		return "redirect:/loginCompleted";
+		return "redirect:/ws-service/main";
 	}
 }

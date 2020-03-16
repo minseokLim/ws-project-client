@@ -37,7 +37,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.and()
 				.oauth2Login()
 				.loginPage("/login")
-				.defaultSuccessUrl("/loginCompleted")
+				.defaultSuccessUrl("/ws-service/main")
 				.failureUrl("/loginFailed")
 			.and()
 				.headers().frameOptions().disable()

@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AES256Util {
+public class AESUtil {
 	
 	@Value("${encrypt.key}")
 	private String key;

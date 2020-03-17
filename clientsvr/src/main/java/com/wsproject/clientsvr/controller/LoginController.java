@@ -56,6 +56,6 @@ public class LoginController {
 			return "redirect:/loginFailed";
 		}
 		
-		return "redirect:/ws-service/main";
+		return "redirect:/";
 	}
 }

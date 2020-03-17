@@ -1,28 +1,62 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-    <head>
+	<head>
         <title>WS-Project</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-        <style type="text/css">
-            .container {
-                text-align: center;
-            }
-        </style>
+        
+		<!-- Site made with Mobirise Website Builder v4.12.3, https://mobirise.com -->
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+		
+		<link rel="stylesheet" href="/assets/web/assets/mobirise-icons/mobirise-icons.css">
+		<link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
+		<link rel="stylesheet" href="/assets/bootstrap/css/bootstrap-grid.min.css">
+		<link rel="stylesheet" href="/assets/bootstrap/css/bootstrap-reboot.min.css">
+		<link rel="stylesheet" href="/assets/socicon/css/styles.css">
+		<link rel="stylesheet" href="/assets/tether/tether.min.css">
+		<link rel="stylesheet" href="/assets/dropdown/css/style.css">
+		<link rel="stylesheet" href="/assets/theme/css/style.css">
+		<link rel="preload" as="style" href="/assets/mobirise/css/mbr-additional.css"><link rel="stylesheet" href="/assets/mobirise/css/mbr-additional.css" type="text/css">
 	</head>
-	<body>
-	   <div class="container">
-	       <div style="margin-top: 15em; margin-left: 1em; margin-right: 1em;">
-	           <p th:text="${todaysWs.content}" style="text-align: left;"></p>
-	           <p th:text="|- ${todaysWs.author}|" style="text-align: right;"></p>
-	       </div>
-	   </div>
-	   
-	   <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-       <script src="https://unpkg.com/@popperjs/core@2"></script>
-       <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-       <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-       <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-	</body>
+    <body>
+        <section th:replace="/layout/header::header"></section>
+		
+        <section class="cid-qTkA127IK8 mbr-fullscreen mbr-parallax-background" id="header2-1">
+		    <div class="container align-center">
+		        <div class="row justify-content-md-center">
+		            <div class="mbr-black col-md-10">
+		                <h1 class="mbr-section-title mbr-bold pb-3 mbr-fonts-style display-1">
+		                    오늘의 명언
+		                </h1>
+		                
+		                <p th:text="${todaysWs.content}" style="text-align: left; font-weight: bold;" class="mbr-text pb-3 mbr-fonts-style display-5"></p>
+		                <p th:text="|- ${todaysWs.author}|" style="text-align: right; font-weight: bold;"></p>
+		                
+		                <!-- <div class="mbr-section-btn">
+		                    <a class="btn btn-md btn-secondary display-4" href="/">LEARN MORE</a>
+		                    <a class="btn btn-md btn-white-outline display-4" href="/">LIVE DEMO</a>
+		                </div> -->
+		            </div>
+		        </div>
+		    </div>
+		    <div class="mbr-arrow hidden-sm-down" aria-hidden="true">
+		        <a href="#next">
+		            <i class="mbri-down mbr-iconfont"></i>
+		        </a>
+		    </div>
+		</section>
+
+        <section th:replace="/layout/footer::footer"></section>
+        
+		<script src="/assets/web/assets/jquery/jquery.min.js"></script>
+		<script src="/assets/popper/popper.min.js"></script>
+		<script src="/assets/bootstrap/js/bootstrap.min.js"></script>
+		<script src="/assets/tether/tether.min.js"></script>
+		<script src="/assets/dropdown/js/nav-dropdown.js"></script>
+		<script src="/assets/dropdown/js/navbar-dropdown.js"></script>
+		<script src="/assets/touchswipe/jquery.touch-swipe.min.js"></script>
+		<script src="/assets/parallax/jarallax.min.js"></script>
+		<script src="/assets/smoothscroll/smooth-scroll.js"></script>
+		<script src="/assets/theme/js/script.js"></script>
+    </body>
 </html>

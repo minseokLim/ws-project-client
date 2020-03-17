@@ -38,7 +38,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.oauth2Login()
 				.loginPage("/login")
 				.defaultSuccessUrl("/ws-service/main")
-				.failureUrl("/loginFailed")
+				.failureUrl("/error")
 			.and()
 				.headers().frameOptions().disable()
 			.and()
@@ -49,7 +49,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.logoutUrl("/logout")
 				.logoutSuccessUrl("/login")
 				.deleteCookies("JSESSIONID")
-				.invalidateHttpSession(true) // TODO need to do
+				.invalidateHttpSession(true)
 			.and()
 				.addFilterBefore(filter, CsrfFilter.class)
 				.csrf().disable();

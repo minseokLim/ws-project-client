@@ -30,7 +30,7 @@ public class WsController {
 	
 	private CustomProperties properties;
 		
-	@GetMapping("/ws-service/main")
+	@GetMapping(value = {"/ws-service/main", "/"})
 	public String main(@CookieValue("userInfo") String userCookie, @CookieValue("tokenInfo") String tokenCookie, Model model) {
 		
 		try {

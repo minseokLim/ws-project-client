@@ -21,7 +21,7 @@ public class AESUtil {
 	private Key keySpec;
 	
 	@PostConstruct
-	public void init() throws UnsupportedEncodingException {
+	private void init() throws UnsupportedEncodingException {
 		this.iv = key.substring(0, 16);
 		byte[] keyBytes = new byte[16];
 		byte[] b = key.getBytes("UTF-8");
@@ -37,18 +37,28 @@ public class AESUtil {
 		this.keySpec = keySpec;
 	}
 	
-	public String encrypt(String str) throws Exception {
-		Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
-		c.init(Cipher.ENCRYPT_MODE, keySpec, new IvParameterSpec(iv.getBytes()));
-		byte[] encrypted = c.doFinal(str.getBytes("UTF-8"));
-		String enStr = new String(Base64.encodeBase64(encrypted));
-		return enStr;
+	public String encrypt(String str) {
+		try {
+			Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
+			c.init(Cipher.ENCRYPT_MODE, keySpec, new IvParameterSpec(iv.getBytes()));
+			byte[] encrypted = c.doFinal(str.getBytes("UTF-8"));
+			String enStr = new String(Base64.encodeBase64(encrypted));
+			return enStr;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
 	}
 	
-	public String decrypt(String str) throws Exception {
-		Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
-		c.init(Cipher.DECRYPT_MODE, keySpec, new IvParameterSpec(iv.getBytes()));
-		byte[] byteStr = Base64.decodeBase64(str.getBytes());
-		return new String(c.doFinal(byteStr), "UTF-8");
+	public String decrypt(String str) {
+		try {
+			Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
+			c.init(Cipher.DECRYPT_MODE, keySpec, new IvParameterSpec(iv.getBytes()));
+			byte[] byteStr = Base64.decodeBase64(str.getBytes());
+			return new String(c.doFinal(byteStr), "UTF-8");
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
 	}
 }

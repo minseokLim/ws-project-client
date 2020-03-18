@@ -10,9 +10,8 @@ import com.google.gson.Gson;
 import com.wsproject.clientsvr.dto.TodaysWs;
 import com.wsproject.clientsvr.dto.TokenInfo;
 import com.wsproject.clientsvr.dto.UserInfo;
-import com.wsproject.clientsvr.property.CustomProperties;
-import com.wsproject.clientsvr.service.RestService;
-import com.wsproject.clientsvr.util.AESUtil;
+import com.wsproject.clientsvr.util.CommonUtil;
+import com.wsproject.clientsvr.util.RestUtil;
 
 import lombok.AllArgsConstructor;
 
@@ -22,31 +21,21 @@ public class WsController {
 	
 	private Gson gson;
 	
-//	private CommonUtil commonUtil;
+	private CommonUtil commonUtil;
 	
-	private AESUtil aesUtil;
-	
-	private RestService restService;
-	
-	private CustomProperties properties;
-		
 	@GetMapping(value = {"/ws-service/main", "/"})
 	public String main(@CookieValue("userInfo") String userCookie, @CookieValue("tokenInfo") String tokenCookie, Model model) {
 		
-		try {
-			UserInfo userInfo = gson.fromJson(aesUtil.decrypt(userCookie), UserInfo.class);
-			TokenInfo tokenInfo = gson.fromJson(aesUtil.decrypt(tokenCookie), TokenInfo.class);
-			
-			String url = properties.getApiBaseUri() + "/ws-service/v1.0/users/" + userInfo.getIdx() + "/todaysWs";
-			
-			ResponseEntity<String> entity = restService.getForEntity(url, tokenInfo);
-			
-			TodaysWs todaysWs = gson.fromJson(entity.getBody(), TodaysWs.class);
-			
-			model.addAttribute("todaysWs", todaysWs);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		UserInfo userInfo = commonUtil.extractCookie(userCookie, UserInfo.class);
+		TokenInfo tokenInfo = commonUtil.extractCookie(tokenCookie, TokenInfo.class);
+		
+		RestUtil restUtil = RestUtil.builder().url("/ws-service/v1.0/users/" + userInfo.getIdx() + "/todaysWs").get().tokenInfo(tokenInfo).build();
+				
+		ResponseEntity<String> entity = restUtil.exchange();
+		
+		TodaysWs todaysWs = gson.fromJson(entity.getBody(), TodaysWs.class);
+		
+		model.addAttribute("todaysWs", todaysWs);
 		
 		return "/ws-service/main";
 	}

@@ -16,5 +16,5 @@ logging:  level:    com.wsproject.clientsvr: debug
                         
 custom:
   api-base-uri: http://localhost:5555/api
-  authsvr-base-uri: http://localhost:8901
+  authsvr-base-uri: http://localhost:8901 # AWS에 올린 후에 다시 주석처리하고 해보자.
   

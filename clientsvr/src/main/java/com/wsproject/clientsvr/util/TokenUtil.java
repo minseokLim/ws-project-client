@@ -19,6 +19,10 @@ import com.wsproject.clientsvr.property.CustomProperties;
 
 import lombok.RequiredArgsConstructor;
 
+/** 토큰 발급/재발급을 관리하는 유틸
+ * @author mslim
+ *
+ */
 @Component
 @RequiredArgsConstructor
 public class TokenUtil {
@@ -50,6 +54,11 @@ public class TokenUtil {
 		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 	}
 	
+	/** 인증서버에 토큰 정보 요청
+	 * @param code
+	 * @param redirectUri
+	 * @return 토큰정보
+	 */
 	public TokenInfo getTokenInfo(String code, String redirectUri) {		
 		MultiValueMap<String, Object> bodyParams = new LinkedMultiValueMap<String, Object>();
 		bodyParams.add("code", code);
@@ -67,6 +76,10 @@ public class TokenUtil {
 		return tokenInfo;
 	}
 	
+	/** 인증서버에 리프레시 토큰을 통해 토큰정보 재발급 요청
+	 * @param refreshToken
+	 * @return 토큰정보
+	 */
 	public TokenInfo refreshTokenInfo(String refreshToken) {		
 		MultiValueMap<String, Object> bodyParams = new LinkedMultiValueMap<String, Object>();
 		bodyParams.add("grant_type", "refresh_token");

@@ -5,6 +5,10 @@ import com.wsproject.clientsvr.dto.enums.WsType;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * @author mslim
+ * 오늘의 명언
+ */
 @Getter
 @Setter
 public class TodaysWs {

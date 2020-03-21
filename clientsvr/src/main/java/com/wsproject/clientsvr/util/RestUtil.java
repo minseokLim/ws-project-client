@@ -17,6 +17,10 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.wsproject.clientsvr.dto.TokenInfo;
 import com.wsproject.clientsvr.property.CustomProperties;
 
+/** Rest 요청에 대한 중복코드를 최소화 하기위해 생성한 유틸
+ * @author mslim
+ *
+ */
 public class RestUtil {
 	
 	private String url;
@@ -36,6 +40,9 @@ public class RestUtil {
 		this.bodyParams = bodyParams;
 	}
 	
+	/** 객체에 있는 정보를 기반으로 Rest요청을 한다.
+	 * @return 리스판스
+	 */
 	public ResponseEntity<String> exchange() {
 		CustomProperties properties = CommonUtil.getBean(CustomProperties.class);
 		
@@ -80,47 +87,82 @@ public class RestUtil {
 			return this;
 		}
 		
+		/** HttpMethod를 GET으로 설정
+		 * @return
+		 */
 		public RestUtilBuilder get() {
 			method = HttpMethod.GET;
 			return this;
 		}
 		
+		/** HttpMethod를 POST로 설정
+		 * @return
+		 */
 		public RestUtilBuilder post() {
 			method = HttpMethod.POST;
 			return this;
 		}
 		
+		/** HttpMethod를 PUT으로 설정
+		 * @return
+		 */
 		public RestUtilBuilder put() {
 			method = HttpMethod.PUT;
 			return this;
 		}
 		
+		/** HttpMethod를 DELETE로 설정
+		 * @return
+		 */
 		public RestUtilBuilder delete() {
 			method = HttpMethod.DELETE;
 			return this;
 		}
 		
+		/** header에 key, value형태로 값을 추가
+		 * @param headerName
+		 * @param headerValue
+		 * @return
+		 */
 		public RestUtilBuilder headers(String headerName, String headerValue) {
 			headers.add(headerName, headerValue);
 			return this;
 		}
 		
+		/** header에 contentType을 설정
+		 * @param mediaType
+		 * @return
+		 */
 		public RestUtilBuilder contentType(MediaType mediaType) {
 			headers.setContentType(mediaType);
 			return this;
 		}
 		
+		/** 요청에 쓰일 토큰정보 설정
+		 * @param tokenInfo
+		 * @return
+		 */
 		public RestUtilBuilder tokenInfo(TokenInfo tokenInfo) {
 			this.tokenInfo = tokenInfo;
 			return this;
 		}
 		
+		/** 쿼리파라미터를 key, value형태로 추가
+		 * @param key
+		 * @param values
+		 * @return
+		 */
 		public RestUtilBuilder queryParams(String key, Object... values) {
 			queryParams.put(key, values);
 			return this;
 		}
 
-		public RestUtilBuilder bodyParams(String key, String value) {
+		/** 바디에 들어갈 파라미터를 key, value 형태로 추가
+		 * @param key
+		 * @param value
+		 * @return
+		 */
+		public RestUtilBuilder bodyParams(String key, Object value) {
 			bodyParams.add(key, value);
 			return this;
 		}

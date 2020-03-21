@@ -1,4 +1,4 @@
-package com.wsproject.clientsvr.oauth2;
+package com.wsproject.clientsvr.provider;
 
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistration.Builder;
@@ -10,6 +10,11 @@ import com.wsproject.clientsvr.property.CustomProperties;
 
 import lombok.AllArgsConstructor;
 
+/**
+ * oauth2 인증 요청에 대한 기본정보를 가지고 있는 객체
+ * @author mslim
+ *
+ */
 @Component
 @AllArgsConstructor
 public class OAuth2Provider {

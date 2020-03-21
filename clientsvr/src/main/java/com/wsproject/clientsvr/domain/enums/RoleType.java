@@ -1,5 +1,9 @@
 package com.wsproject.clientsvr.domain.enums;
 
+/**
+ * @author mslim
+ * 권한 정보
+ */
 public enum RoleType {
 	ADMIN("ADMIN"),
 	USER("USER");

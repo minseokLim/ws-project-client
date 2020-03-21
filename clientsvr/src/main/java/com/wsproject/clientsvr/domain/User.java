@@ -16,6 +16,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * @author mslim
+ * User 정보
+ */
 @Getter
 @NoArgsConstructor
 public class User implements Serializable {

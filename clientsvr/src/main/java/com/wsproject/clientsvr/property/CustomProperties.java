@@ -6,6 +6,9 @@ import org.springframework.stereotype.Component;
 import lombok.Getter;
 import lombok.Setter;
 
+/** appication.yml에서 관리되는 커스텀 프로퍼티
+ * @author mslim
+ */
 @Component
 @Getter
 @Setter

@@ -17,7 +17,7 @@ import org.springframework.security.web.authentication.LoginUrlAuthenticationEnt
 import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
-import com.wsproject.clientsvr.oauth2.OAuth2Provider;
+import com.wsproject.clientsvr.provider.OAuth2Provider;
 
 import lombok.AllArgsConstructor;
 
@@ -55,6 +55,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.csrf().disable();
 	}
 	
+	/**
+	 * application.yml에 있는 oauthclient정보를 통해 빈객체 생성
+	 * @param oAuth2ClientProperties
+	 * @return oauthclient정보를 관리하는 리파지토리
+	 */
 	@Bean
 	public ClientRegistrationRepository clientRegistrationRepository(OAuth2ClientProperties oAuth2ClientProperties) {
 		List<ClientRegistration> registrations = oAuth2ClientProperties.getRegistration().keySet().stream()

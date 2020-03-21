@@ -23,6 +23,12 @@ public class WsController {
 	
 	private CommonUtil commonUtil;
 	
+	/** 오늘의 명언 메인화면
+	 * @param userCookie
+	 * @param tokenCookie
+	 * @param model
+	 * @return
+	 */
 	@GetMapping(value = {"/ws-service/main", "/"})
 	public String main(@CookieValue("userInfo") String userCookie, @CookieValue("tokenInfo") String tokenCookie, Model model) {
 		

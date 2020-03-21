@@ -3,6 +3,10 @@ package com.wsproject.clientsvr.dto;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * @author mslim
+ * 토큰 정보
+ */
 @Getter
 @Setter
 public class TokenInfo {

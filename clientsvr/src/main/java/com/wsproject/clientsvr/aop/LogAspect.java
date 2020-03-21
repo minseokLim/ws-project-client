@@ -8,6 +8,10 @@ import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * @author mslim
+ * 함수 실행 시작/끝에 Log를 자동 생성시켜주는 Aspect
+ */
 @Aspect
 @Component
 @Slf4j

@@ -30,11 +30,20 @@ public class LoginController {
 		
 	private TokenUtil tokenUtil;
 		
+	/** 로그인 화면
+	 * @return
+	 */
 	@GetMapping("/login")
 	public String login() {
 		return "redirect:/oauth2/authorization/ws-project";
 	}
 	
+	/** 인증서버의 인증을 거친후 리다이렉트되는 url
+	 * @param code
+	 * @param request
+	 * @param response
+	 * @return
+	 */
 	@GetMapping("/login/oauth2/code")
 	public String actionLogin(@RequestParam("code") String code, HttpServletRequest request, HttpServletResponse response) {
 		String redirectUri = request.getRequestURL().toString();

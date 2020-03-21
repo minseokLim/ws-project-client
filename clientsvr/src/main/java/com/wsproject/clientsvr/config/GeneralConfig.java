@@ -15,6 +15,10 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 
+/**
+ * @author mslim
+ * Bean 생성을 한 곳에서 관리하기 위한 Configuration
+ */
 @Configuration
 public class GeneralConfig {
 	
@@ -25,8 +29,10 @@ public class GeneralConfig {
 	
 	@Bean
 	public Gson gson() {
+		
 		Gson gson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class, new JsonDeserializer<LocalDateTime>() {
-
+			
+			// Json String을 LocalDateTime으로 파싱하기 위해 추가
 			@Override
 			public LocalDateTime deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 					throws JsonParseException {

@@ -14,15 +14,17 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
+import com.wsproject.clientsvr.config.CustomProperties;
 import com.wsproject.clientsvr.dto.TokenInfo;
-import com.wsproject.clientsvr.property.CustomProperties;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /** 토큰 발급/재발급을 관리하는 유틸
  * @author mslim
  *
  */
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class TokenUtil {
@@ -59,7 +61,9 @@ public class TokenUtil {
 	 * @param redirectUri
 	 * @return 토큰정보
 	 */
-	public TokenInfo getTokenInfo(String code, String redirectUri) {		
+	public TokenInfo getTokenInfo(String code, String redirectUri) {
+		log.info("getTokenInfo started");
+		
 		MultiValueMap<String, Object> bodyParams = new LinkedMultiValueMap<String, Object>();
 		bodyParams.add("code", code);
 		bodyParams.add("grant_type", "authorization_code");
@@ -73,6 +77,7 @@ public class TokenUtil {
 		
 		commonUtil.addCookie("tokenInfo", gson.toJson(tokenInfo));
 		
+		log.info("getTokenInfo ended");
 		return tokenInfo;
 	}
 	
@@ -80,7 +85,8 @@ public class TokenUtil {
 	 * @param refreshToken
 	 * @return 토큰정보
 	 */
-	public TokenInfo refreshTokenInfo(String refreshToken) {		
+	public TokenInfo refreshTokenInfo(String refreshToken) {
+		log.info("refreshTokenInfo started");
 		MultiValueMap<String, Object> bodyParams = new LinkedMultiValueMap<String, Object>();
 		bodyParams.add("grant_type", "refresh_token");
 		bodyParams.add("refresh_token", refreshToken);
@@ -93,6 +99,7 @@ public class TokenUtil {
 		
 		commonUtil.addCookie("tokenInfo", gson.toJson(tokenInfo));
 		
+		log.info("refreshTokenInfo ended");
 		return tokenInfo;
 	}
 }

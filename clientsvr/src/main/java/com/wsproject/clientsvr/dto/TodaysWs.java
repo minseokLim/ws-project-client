@@ -1,6 +1,6 @@
 package com.wsproject.clientsvr.dto;
 
-import com.wsproject.clientsvr.dto.enums.WsType;
+import com.wsproject.clientsvr.domain.enums.WsType;
 
 import lombok.Getter;
 import lombok.Setter;

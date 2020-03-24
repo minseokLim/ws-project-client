@@ -1,4 +1,4 @@
-package com.wsproject.clientsvr.provider;
+package com.wsproject.clientsvr.util;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

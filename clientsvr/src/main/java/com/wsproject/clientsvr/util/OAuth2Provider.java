@@ -1,4 +1,4 @@
-package com.wsproject.clientsvr.provider;
+package com.wsproject.clientsvr.util;
 
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistration.Builder;
@@ -6,7 +6,7 @@ import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.stereotype.Component;
 
-import com.wsproject.clientsvr.property.CustomProperties;
+import com.wsproject.clientsvr.config.CustomProperties;
 
 import lombok.AllArgsConstructor;
 

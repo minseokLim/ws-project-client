@@ -11,7 +11,6 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.google.gson.Gson;
-import com.wsproject.clientsvr.provider.ApplicationContextProvider;
 
 import lombok.AllArgsConstructor;
 

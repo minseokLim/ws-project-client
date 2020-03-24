@@ -14,13 +14,16 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.wsproject.clientsvr.config.CustomProperties;
 import com.wsproject.clientsvr.dto.TokenInfo;
-import com.wsproject.clientsvr.property.CustomProperties;
+
+import lombok.extern.slf4j.Slf4j;
 
 /** Rest 요청에 대한 중복코드를 최소화 하기위해 생성한 유틸
  * @author mslim
  *
  */
+@Slf4j
 public class RestUtil {
 	
 	private String url;
@@ -44,6 +47,7 @@ public class RestUtil {
 	 * @return 리스판스
 	 */
 	public ResponseEntity<String> exchange() {
+		log.info("exchange started");
 		CustomProperties properties = CommonUtil.getBean(CustomProperties.class);
 		
 		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(properties.getApiBaseUri() + url);
@@ -55,8 +59,10 @@ public class RestUtil {
 		
 		RestTemplate restTemplate = CommonUtil.getBean(RestTemplate.class);
 		
+		ResponseEntity<String> result;
+		
 		try {
-			return restTemplate.exchange(builder.toUriString(), method, entity, String.class);
+			result = restTemplate.exchange(builder.toUriString(), method, entity, String.class);
 		// 토큰이 만료됐을 경우 리프레시 토큰을 통해 재발급받는다
 		} catch (HttpClientErrorException.Unauthorized e) {
 			TokenUtil tokenUtil = CommonUtil.getBean(TokenUtil.class);
@@ -65,8 +71,11 @@ public class RestUtil {
 			headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + refreshed.getAccess_token());
 			entity = new HttpEntity<MultiValueMap<String,Object>>(bodyParams, headers);
 			
-			return restTemplate.exchange(builder.toUriString(), method, entity, String.class);
+			result = restTemplate.exchange(builder.toUriString(), method, entity, String.class);
 		}
+		
+		log.info("exchange ended");
+		return result;
 	}
 	
 	public static RestUtilBuilder builder() {

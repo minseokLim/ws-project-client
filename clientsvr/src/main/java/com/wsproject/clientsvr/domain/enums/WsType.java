@@ -1,4 +1,4 @@
-package com.wsproject.clientsvr.dto.enums;
+package com.wsproject.clientsvr.domain.enums;
 
 /**
  * @author mslim

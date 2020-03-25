@@ -47,7 +47,7 @@ public class RestUtil {
 	 * @return 리스판스
 	 */
 	public ResponseEntity<String> exchange() {
-		log.info("exchange started");
+		log.info("exchange started - url : {}", url);
 		CustomProperties properties = CommonUtil.getBean(CustomProperties.class);
 		
 		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(properties.getApiBaseUri() + url);
@@ -74,7 +74,7 @@ public class RestUtil {
 			result = restTemplate.exchange(builder.toUriString(), method, entity, String.class);
 		}
 		
-		log.info("exchange ended");
+		log.info("exchange ended - url : {}", url);
 		return result;
 	}
 	

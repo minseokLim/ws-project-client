@@ -1,0 +1,22 @@
+server:
+  port: 80
+      
+spring:
+  thymeleaf:
+    cache: false
+  security:
+    oauth2:
+      client:
+        registration:
+          ws-project:
+            client-id: "{cipher}8792efbb10ee0e7637154a565b069234298b3cd2cab887db6031e9fcbc36a099"
+            client-secret: "{cipher}a9aebad181d46568fb4b19d1eb5028108ba691bdeafafcf4afd23f7090e34118bdfef9adbb4793c5a56c3ede06a8e95e2860d512b263e8b0dab580ca4fe9d3a3"
+
+logging:
+  level:
+    com.wsproject.clientsvr: debug
+                        
+custom:
+  api-base-uri: http://ec2-52-78-84-133.ap-northeast-2.compute.amazonaws.com:5555/api
+  authsvr-base-uri: http://ec2-52-78-84-133.ap-northeast-2.compute.amazonaws.com:8901 # AWS에 올린 후에 다시 주석처리하고 해보자.
+  

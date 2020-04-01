@@ -1,9 +1,9 @@
 version: "3"
 services:
   clientsvr:
-    image: ws-project/clientsvr:1
+    image: mslim8803/clientsvr:1
     ports:
       - 8081:8081
     environment:
-      PROFILE: "dev"
+      PROFILE: "aws"
       ENCRYPT_KEY: ${ENCRYPT_KEY}

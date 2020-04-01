@@ -43,6 +43,6 @@ public class WsController {
 		
 		model.addAttribute("todaysWs", todaysWs);
 		
-		return "/ws-service/main";
+		return "ws-service/main";
 	}
 }

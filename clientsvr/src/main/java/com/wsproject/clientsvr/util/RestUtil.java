@@ -53,6 +53,8 @@ public class RestUtil {
 		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(properties.getApiBaseUri() + url);
 		queryParams.entrySet().forEach(entry -> builder.queryParam(entry.getKey(), entry.getValue()));
 		
+		log.info("Full URL : {}", builder.toUriString());
+		
 		headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + tokenInfo.getAccess_token());
 		
 		HttpEntity<MultiValueMap<String, Object>> entity = new HttpEntity<MultiValueMap<String,Object>>(bodyParams, headers);

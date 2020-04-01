@@ -1,0 +1,9 @@
+version: "3"
+services:
+  clientsvr:
+    image: mslim8803/clientsvr:1
+    ports:
+      - 80:80
+    environment:
+      PROFILE: "on-aws"
+      ENCRYPT_KEY: ${ENCRYPT_KEY}

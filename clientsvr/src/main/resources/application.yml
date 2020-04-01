@@ -12,7 +12,9 @@ spring:
             client-id: "{cipher}8792efbb10ee0e7637154a565b069234298b3cd2cab887db6031e9fcbc36a099"
             client-secret: "{cipher}a9aebad181d46568fb4b19d1eb5028108ba691bdeafafcf4afd23f7090e34118bdfef9adbb4793c5a56c3ede06a8e95e2860d512b263e8b0dab580ca4fe9d3a3"
 
-logging:  level:    com.wsproject.clientsvr: debug
+logging:
+  level:
+    com.wsproject.clientsvr: debug
                         
 custom:
   api-base-uri: http://localhost:5555/api

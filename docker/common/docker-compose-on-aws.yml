@@ -1,7 +1,7 @@
 version: "3"
 services:
   clientsvr:
-    image: mslim8803/clientsvr:1
+    image: mslim8803/clientsvr:$BUILD_NAME
     ports:
       - 80:80
     environment:

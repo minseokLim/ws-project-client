@@ -17,7 +17,7 @@
 	<properties>
 		<docker.version>1.2.1</docker.version>
         <docker.image.name>mslim8803/clientsvr</docker.image.name>
-        <docker.image.tag>1</docker.image.tag>
+        <docker.image.tag>${env.BUILD_NAME}</docker.image.tag>
         <spring-cloud.version>Hoxton.SR1</spring-cloud.version>
 	</properties>
 

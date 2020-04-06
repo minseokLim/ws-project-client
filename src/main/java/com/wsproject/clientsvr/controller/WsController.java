@@ -45,4 +45,9 @@ public class WsController {
 		
 		return "ws-service/main";
 	}
+	
+	@GetMapping("/ws-service/saveWsPage")
+	public String saveWsPage() {
+		return "ws-service/saveWsPage";
+	}
 }

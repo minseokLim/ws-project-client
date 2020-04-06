@@ -1,10 +1,10 @@
 server:
   port: 80
-  ssl:
-    enabled: true
-    key-store: /home/ec2-user/cert/letsencrypt.jks
-    key-store-password: "{cipher}be015ff71f9a23702df5f33e533af44446a5c62d77b39c6a18f15be338367cbc"
-    key-password: "{cipher}be015ff71f9a23702df5f33e533af44446a5c62d77b39c6a18f15be338367cbc"
+#  ssl:
+#    enabled: true
+#    key-store: /home/ec2-user/cert/letsencrypt.jks
+#    key-store-password: "{cipher}be015ff71f9a23702df5f33e533af44446a5c62d77b39c6a18f15be338367cbc"
+#    key-password: "{cipher}be015ff71f9a23702df5f33e533af44446a5c62d77b39c6a18f15be338367cbc"
       
 spring:
   thymeleaf:

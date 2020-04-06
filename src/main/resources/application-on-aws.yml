@@ -18,5 +18,5 @@ logging:
                         
 custom:
   api-base-uri: http://mslim8803.shop:5555/api
-  authsvr-base-uri: http://auth.mslim8803.shop:9000 # AWS에 올린 후에 다시 주석처리하고 해보자.
+  authsvr-base-uri: http://auth.mslim8803.shop # AWS에 올린 후에 다시 주석처리하고 해보자.
   

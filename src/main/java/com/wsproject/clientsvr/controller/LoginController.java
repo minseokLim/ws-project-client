@@ -1,5 +1,6 @@
 package com.wsproject.clientsvr.controller;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -19,7 +20,9 @@ import com.wsproject.clientsvr.util.RestUtil;
 import com.wsproject.clientsvr.util.TokenUtil;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Controller
 @AllArgsConstructor
 public class LoginController {
@@ -34,7 +37,14 @@ public class LoginController {
 	 * @return
 	 */
 	@GetMapping("/login")
-	public String login() {
+	public String login(HttpServletRequest request) {
+		
+		Cookie[] cookies = request.getCookies();
+		
+		for(Cookie cookie : cookies) {
+			log.debug("name : {}, value: {}, path: {}, domain: {}, maxAge: {}", cookie.getName(), cookie.getValue(), cookie.getPath(), cookie.getDomain(), cookie.getMaxAge());
+		}
+		
 		return "redirect:/oauth2/authorization/ws-project";
 	}
 	

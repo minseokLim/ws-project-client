@@ -2,7 +2,7 @@ server:
   port: 8081
   forward-headers-strategy: native
   tomcat:
-    internal-proxies: .*
+#    internal-proxies: .*
     use-relative-redirects: true
     
 spring:

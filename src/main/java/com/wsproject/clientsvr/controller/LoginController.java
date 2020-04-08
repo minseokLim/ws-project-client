@@ -38,10 +38,6 @@ public class LoginController {
 	 */
 	@GetMapping("/login")
 	public String login(HttpServletRequest request) {
-		
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		log.debug("authentication : {}", authentication);
-		
 		return "redirect:/oauth2/authorization/ws-project";
 	}
 	

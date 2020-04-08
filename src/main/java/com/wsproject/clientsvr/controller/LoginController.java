@@ -41,8 +41,10 @@ public class LoginController {
 		
 		Cookie[] cookies = request.getCookies();
 		
-		for(Cookie cookie : cookies) {
-			log.debug("name : {}, value: {}, path: {}, domain: {}, maxAge: {}", cookie.getName(), cookie.getValue(), cookie.getPath(), cookie.getDomain(), cookie.getMaxAge());
+		if(cookies != null) {
+			for(Cookie cookie : cookies) {
+				log.debug("name : {}, value: {}, path: {}, domain: {}, maxAge: {}", cookie.getName(), cookie.getValue(), cookie.getPath(), cookie.getDomain(), cookie.getMaxAge());
+			}
 		}
 		
 		return "redirect:/oauth2/authorization/ws-project";

@@ -1,11 +1,11 @@
 package com.wsproject.clientsvr.controller;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,6 +38,10 @@ public class LoginController {
 	 */
 	@GetMapping("/login")
 	public String login(HttpServletRequest request) {
+		
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		log.debug("authentication : {}", authentication);
+		
 		return "redirect:/oauth2/authorization/ws-project";
 	}
 	

@@ -38,15 +38,6 @@ public class LoginController {
 	 */
 	@GetMapping("/login")
 	public String login(HttpServletRequest request) {
-		
-		Cookie[] cookies = request.getCookies();
-		
-		if(cookies != null) {
-			for(Cookie cookie : cookies) {
-				log.debug("name : {}, value: {}, path: {}, domain: {}, maxAge: {}", cookie.getName(), cookie.getValue(), cookie.getPath(), cookie.getDomain(), cookie.getMaxAge());
-			}
-		}
-		
 		return "redirect:/oauth2/authorization/ws-project";
 	}
 	

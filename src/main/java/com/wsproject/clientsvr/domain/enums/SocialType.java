@@ -7,7 +7,8 @@ package com.wsproject.clientsvr.domain.enums;
 public enum SocialType {
 	FACEBOOK("facebook"),
 	GOOGLE("google"),
-	KAKAO("kakao");
+	KAKAO("kakao"),
+	GITHUB("github");
 	
 	private String name;
 	

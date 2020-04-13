@@ -25,15 +25,15 @@
 	        </div>
 	        <div class="collapse navbar-collapse" id="navbarSupportedContent">
 	            <ul class="navbar-nav nav-dropdown" data-app-modern-menu="true">                    
-	                <li class="nav-item">
+	                <!-- <li class="nav-item">
                         <a class="nav-link link text-white display-4" href="/ws-service/saveWsPage">
-                            <span class="mbri-logout mbr-iconfont mbr-iconfont-btn"></span>
+                            <span class="mbri-save mbr-iconfont mbr-iconfont-btn"></span>
                             명언 추가
                         </a>
-                    </li>
+                    </li> -->
 	                <li class="nav-item">
-	                    <a class="nav-link link text-white display-4" href="/logout">
-	                        <span class="mbri-save mbr-iconfont mbr-iconfont-btn"></span>
+	                    <a class="nav-link link text-white display-4" href="javascript:void(0);" onclick="logout();">
+	                        <span class="mbri-logout mbr-iconfont mbr-iconfont-btn"></span>
 	                        LOGOUT
 	                    </a>
 	                </li>
@@ -46,5 +46,44 @@
 	            </div> -->
 	        </div>
 	    </nav>
+	    
+	    <script type="text/javascript" th:inline="javascript">
+            /* <![CDATA[ */
+            var authsvrBaseUri = /*[[ ${authsvrBaseUri} ]]*/;
+            
+            function logout() {
+                $.ajax({
+                    url: authsvrBaseUri + '/logout',
+                    type: 'POST',
+                    xhrFields: {
+                        withCredentials: true
+                    }
+                });
+                    
+                post_to_url('/logout');
+            }
+            
+            function post_to_url(path, params, method) {
+                method = method || "post"; // 전송 방식 기본값을 POST로
+             
+                var form = document.createElement("form");
+                form.setAttribute("method", method);
+                form.setAttribute("action", path);
+             
+                //히든으로 값을 주입시킨다.
+                for(var key in params) {
+                    var hiddenField = document.createElement("input");
+                    hiddenField.setAttribute("type", "hidden");
+                    hiddenField.setAttribute("name", key);
+                    hiddenField.setAttribute("value", params[key]);
+             
+                    form.appendChild(hiddenField);
+                }
+             
+                document.body.appendChild(form);
+                form.submit();
+            }
+            /* ]]> */
+        </script>
 	</section>
 </html>

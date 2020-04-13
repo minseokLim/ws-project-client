@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.google.gson.Gson;
+import com.wsproject.clientsvr.config.CustomProperties;
 import com.wsproject.clientsvr.dto.TodaysWs;
 import com.wsproject.clientsvr.dto.TokenInfo;
 import com.wsproject.clientsvr.dto.UserInfo;
@@ -22,6 +23,8 @@ public class WsController {
 	private Gson gson;
 	
 	private CommonUtil commonUtil;
+	
+	private CustomProperties properties;
 	
 	/** 오늘의 명언 메인화면
 	 * @param userCookie
@@ -42,6 +45,7 @@ public class WsController {
 		TodaysWs todaysWs = gson.fromJson(entity.getBody(), TodaysWs.class);
 		
 		model.addAttribute("todaysWs", todaysWs);
+		model.addAttribute("authsvrBaseUri", properties.getAuthsvrBaseUri());
 		
 		return "ws-service/main";
 	}

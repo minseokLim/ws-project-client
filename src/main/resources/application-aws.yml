@@ -18,6 +18,6 @@ logging:
     org.springframework: debug
                         
 custom:
-  api-base-uri: http://mslim8803.shop:5555/api
-  authsvr-base-uri: http://mslim8803.shop:8901 # AWS에 올린 후에 다시 주석처리하고 해보자.
+  api-base-uri: https://api.mslim8803.shop/api
+  authsvr-base-uri: https://auth.mslim8803.shop # AWS에 올린 후에 다시 주석처리하고 해보자.
   

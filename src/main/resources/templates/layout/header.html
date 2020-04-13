@@ -55,12 +55,14 @@
                 $.ajax({
                     url: authsvrBaseUri + '/logout',
                     type: 'POST',
+                    crossDomain: true,
                     xhrFields: {
                         withCredentials: true
+                    },
+                    success: function() {
+                    	post_to_url('/logout');
                     }
                 });
-                    
-                post_to_url('/logout');
             }
             
             function post_to_url(path, params, method) {

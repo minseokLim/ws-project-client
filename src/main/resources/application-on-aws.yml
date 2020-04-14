@@ -19,7 +19,7 @@ spring:
 logging:
   level:
     com.wsproject.clientsvr: debug
-    org.springframework: debug
+#    org.springframework: debug
     
 custom:
   api-base-uri: https://api.mslim8803.shop/api

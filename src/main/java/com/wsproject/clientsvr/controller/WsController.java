@@ -46,8 +46,8 @@ public class WsController {
 		return "ws-service/main";
 	}
 	
-	@GetMapping("/ws-service/saveWsPage")
-	public String saveWsPage() {
-		return "ws-service/saveWsPage";
+	@GetMapping("/ws-service/saveWsPsl")
+	public String saveWsPsl() {
+		return "ws-service/saveWsPsl";
 	}
 }

@@ -8,8 +8,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -31,16 +29,16 @@ public class RestUtil {
 	private HttpHeaders headers;
 	private TokenInfo tokenInfo;
 	private Map<String, Object[]> queryParams;
-	private MultiValueMap<String, Object> bodyParams;
+	private Object bodyParam;
 	
 	public RestUtil(String url, HttpMethod method, HttpHeaders headers, TokenInfo tokenInfo, 
-					Map<String, Object[]> queryParams, MultiValueMap<String, Object> bodyParams) {
+					Map<String, Object[]> queryParams, Object bodyParam) {
 		this.url = url;
 		this.method = method;
 		this.headers = headers;
 		this.tokenInfo = tokenInfo;
 		this.queryParams = queryParams;
-		this.bodyParams = bodyParams;
+		this.bodyParam = bodyParam;
 	}
 	
 	/** 객체에 있는 정보를 기반으로 Rest요청을 한다.
@@ -57,7 +55,7 @@ public class RestUtil {
 		
 		headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + tokenInfo.getAccess_token());
 		
-		HttpEntity<MultiValueMap<String, Object>> entity = new HttpEntity<MultiValueMap<String,Object>>(bodyParams, headers);
+		HttpEntity<Object> entity = new HttpEntity<Object>(bodyParam, headers);
 		
 		RestTemplate restTemplate = CommonUtil.getBean(RestTemplate.class);
 		
@@ -71,7 +69,7 @@ public class RestUtil {
 			
 			TokenInfo refreshed = tokenUtil.refreshTokenInfo(tokenInfo.getRefresh_token());
 			headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + refreshed.getAccess_token());
-			entity = new HttpEntity<MultiValueMap<String,Object>>(bodyParams, headers);
+			entity = new HttpEntity<Object>(bodyParam, headers);
 			
 			result = restTemplate.exchange(builder.toUriString(), method, entity, String.class);
 		}
@@ -91,8 +89,13 @@ public class RestUtil {
 		private HttpHeaders headers = new HttpHeaders();
 		private TokenInfo tokenInfo;
 		private Map<String, Object[]> queryParams = new HashMap<>();
-		private MultiValueMap<String, Object> bodyParams = new LinkedMultiValueMap<String, Object>();
+		private Object bodyParam;
 		
+		public RestUtilBuilder() {
+			// 디폴트 Content-Type=application/json
+			headers.setContentType(MediaType.APPLICATION_JSON);
+		}
+
 		public RestUtilBuilder url(String url) {
 			this.url = url;
 			return this;
@@ -168,18 +171,13 @@ public class RestUtil {
 			return this;
 		}
 
-		/** 바디에 들어갈 파라미터를 key, value 형태로 추가
-		 * @param key
-		 * @param value
-		 * @return
-		 */
-		public RestUtilBuilder bodyParams(String key, Object value) {
-			bodyParams.add(key, value);
+		public RestUtilBuilder bodyParam(Object bodyParam) {
+			this.bodyParam = bodyParam;
 			return this;
 		}
 		
 		public RestUtil build() {
-			return new RestUtil(url, method, headers, tokenInfo, queryParams, bodyParams);
+			return new RestUtil(url, method, headers, tokenInfo, queryParams, bodyParam);
 		}
 	}
 }

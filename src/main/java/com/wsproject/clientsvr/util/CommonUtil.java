@@ -6,27 +6,18 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.context.ApplicationContext;
-import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.google.gson.Gson;
 
-import lombok.AllArgsConstructor;
-
-@Component
-@AllArgsConstructor
 public class CommonUtil {
 
-	private AESUtil aesUtil;
-	
-	private Gson gson;
-	
 	/** '/' 경로에 쿠키를 추가한다
 	 * @param name
 	 * @param value
 	 */
-	public void addCookie(String name, String value) {
+	public static void addCookie(String name, String value) {
 		addCookie(name, value, "/");
 	}
 	
@@ -35,11 +26,11 @@ public class CommonUtil {
 	 * @param value
 	 * @param path
 	 */
-	public void addCookie(String name, String value, String path) {
+	public static void addCookie(String name, String value, String path) {
 		HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
 		
 		try {
-			Cookie cookie = new Cookie(name, URLEncoder.encode(aesUtil.encrypt(value), "UTF-8"));
+			Cookie cookie = new Cookie(name, URLEncoder.encode(AESUtil.encrypt(value), "UTF-8"));
 			cookie.setPath(path);
 			response.addCookie(cookie);
 		} catch (Exception e) {
@@ -54,8 +45,9 @@ public class CommonUtil {
 	 * @param classType
 	 * @return 쿠키로부터 추출된 객체
 	 */
-	public <T> T extractCookie(String cookie, Class<T> classType) {
-		return gson.fromJson(aesUtil.decrypt(cookie), classType);
+	public static <T> T extractCookie(String cookie, Class<T> classType) {
+		Gson gson = getBean(Gson.class);
+		return gson.fromJson(AESUtil.decrypt(cookie), classType);
 	}
 	
 	/** Bean객체를 얻는다

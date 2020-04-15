@@ -37,8 +37,6 @@ public class TokenUtil {
 	
 	private final RestTemplate restTemplate;
 	
-	private final CommonUtil commonUtil;
-	
 	private String url;
 	
 	private HttpHeaders headers = new HttpHeaders();
@@ -75,7 +73,7 @@ public class TokenUtil {
 		
 		TokenInfo tokenInfo = gson.fromJson(response, TokenInfo.class);
 		
-		commonUtil.addCookie("tokenInfo", gson.toJson(tokenInfo));
+		CommonUtil.addCookie("tokenInfo", gson.toJson(tokenInfo));
 		
 		log.info("getTokenInfo ended");
 		return tokenInfo;
@@ -97,7 +95,7 @@ public class TokenUtil {
 		
 		TokenInfo tokenInfo = gson.fromJson(response, TokenInfo.class);
 		
-		commonUtil.addCookie("tokenInfo", gson.toJson(tokenInfo));
+		CommonUtil.addCookie("tokenInfo", gson.toJson(tokenInfo));
 		
 		log.info("refreshTokenInfo ended");
 		return tokenInfo;

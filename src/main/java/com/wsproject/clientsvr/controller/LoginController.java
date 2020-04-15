@@ -26,8 +26,6 @@ public class LoginController {
 	
 	private Gson gson;
 	
-	private CommonUtil commonUtil;
-		
 	private TokenUtil tokenUtil;
 		
 	/** 로그인 화면
@@ -55,7 +53,7 @@ public class LoginController {
 		User user = gson.fromJson(result.getBody(), User.class);
 		
 		SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(user.getIdx(), "N/A", user.getAuthorities()));
-		commonUtil.addCookie("userInfo", gson.toJson(new UserInfo(user)));
+		CommonUtil.addCookie("userInfo", gson.toJson(new UserInfo(user)));
 
 		return "redirect:/";
 	}

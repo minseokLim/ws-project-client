@@ -21,8 +21,6 @@ public class WsController {
 	
 	private Gson gson;
 	
-	private CommonUtil commonUtil;
-	
 	/** 오늘의 명언 메인화면
 	 * @param userCookie
 	 * @param tokenCookie
@@ -32,8 +30,8 @@ public class WsController {
 	@GetMapping(value = {"/ws-service/main", "/"})
 	public String main(@CookieValue("userInfo") String userCookie, @CookieValue("tokenInfo") String tokenCookie, Model model) {
 		
-		UserInfo userInfo = commonUtil.extractCookie(userCookie, UserInfo.class);
-		TokenInfo tokenInfo = commonUtil.extractCookie(tokenCookie, TokenInfo.class);
+		UserInfo userInfo = CommonUtil.extractCookie(userCookie, UserInfo.class);
+		TokenInfo tokenInfo = CommonUtil.extractCookie(tokenCookie, TokenInfo.class);
 		
 		RestUtil restUtil = RestUtil.builder().url("/ws-service/v1.0/users/" + userInfo.getIdx() + "/todaysWs").get().tokenInfo(tokenInfo).build();
 				

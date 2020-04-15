@@ -3,7 +3,6 @@ package com.wsproject.clientsvr.util;
 import java.io.UnsupportedEncodingException;
 import java.security.Key;
 
-import javax.annotation.PostConstruct;
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
@@ -19,29 +18,31 @@ import org.springframework.stereotype.Component;
 @Component
 public class AESUtil {
 	
+	private static String key;
+	private static String iv;
+	private static Key keySpec;
+	
 	@Value("${encrypt.key}")
-	private String key;
-	private String iv;
-	private Key keySpec;
-	
-	@PostConstruct
-	private void init() throws UnsupportedEncodingException {
-		this.iv = key.substring(0, 16);
-		byte[] keyBytes = new byte[16];
-		byte[] b = key.getBytes("UTF-8");
-		int len = b.length;
-		
-		if (len > keyBytes.length) {
-			len = keyBytes.length;
+	public void init(String value) {
+		try {
+			key = value;
+			iv = key.substring(0, 16);
+			byte[] keyBytes = new byte[16];
+			byte[] b = key.getBytes("UTF-8");
+			int len = b.length;
+			
+			if (len > keyBytes.length) {
+				len = keyBytes.length;
+			}
+			
+			System.arraycopy(b, 0, keyBytes, 0, len);
+			keySpec = new SecretKeySpec(keyBytes, "AES");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
 		}
-		
-		System.arraycopy(b, 0, keyBytes, 0, len);
-		SecretKeySpec keySpec = new SecretKeySpec(keyBytes, "AES");
-
-		this.keySpec = keySpec;
 	}
-	
-	public String encrypt(String str) {
+
+	public static String encrypt(String str) {
 		try {
 			Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
 			c.init(Cipher.ENCRYPT_MODE, keySpec, new IvParameterSpec(iv.getBytes()));
@@ -54,7 +55,7 @@ public class AESUtil {
 		}
 	}
 	
-	public String decrypt(String str) {
+	public static String decrypt(String str) {
 		try {
 			Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
 			c.init(Cipher.DECRYPT_MODE, keySpec, new IvParameterSpec(iv.getBytes()));

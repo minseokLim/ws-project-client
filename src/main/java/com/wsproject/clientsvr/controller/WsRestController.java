@@ -19,13 +19,11 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class WsRestController {
 	
-	private CommonUtil commonUtil;
-	
 	@PostMapping("/ws-service/wsPsls")
 	public ResponseEntity<String> insertWsPersonal(@CookieValue("userInfo") String userCookie, @CookieValue("tokenInfo") String tokenCookie, @RequestBody WsPsl wsPsl) {
 		
-		UserInfo userInfo = commonUtil.extractCookie(userCookie, UserInfo.class);
-		TokenInfo tokenInfo = commonUtil.extractCookie(tokenCookie, TokenInfo.class);
+		UserInfo userInfo = CommonUtil.extractCookie(userCookie, UserInfo.class);
+		TokenInfo tokenInfo = CommonUtil.extractCookie(tokenCookie, TokenInfo.class);
 		
 		wsPsl.setOwnerIdx(userInfo.getIdx());
 		

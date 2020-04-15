@@ -6,19 +6,34 @@
         
         <section class="cid-qTkA127IK8 mbr-fullscreen mbr-parallax-background" id="header2-1">
             <div class="container align-center">
-                <div class="row justify-content-md-center">
-                    <div class="mbr-black col-md-10" style="background-color: rgba(255, 255, 255, 0.6); margin: 8px; border-radius: 8px;">
-                        <h1 class="mbr-section-title mbr-bold pb-3 mbr-fonts-style display-1" style="margin-top: 1rem;">
-                            오늘의 명언
+                <div class="row justify-content-md-center" >
+                    <div class="mbr-black col-md-10" style="background-color: rgba(255, 255, 255, 0.6); margin: 8px; border-radius: 8px; padding: 2em;">
+                        <h1 class="mbr-section-title mbr-bold pb-3 mbr-fonts-style display-2">
+                            명언 추가
                         </h1>
                         
-                        <p th:text="${todaysWs.content}" style="text-align: left; font-weight: bold;" class="mbr-text pb-3 mbr-fonts-style display-5"></p>
-                        <p th:text="|- ${todaysWs.author}|" style="text-align: right; font-weight: bold;"></p>
-                        
-                        <!-- <div class="mbr-section-btn">
-                            <a class="btn btn-md btn-secondary display-4" href="/">LEARN MORE</a>
-                            <a class="btn btn-md btn-white-outline display-4" href="/">LIVE DEMO</a>
-                        </div> -->
+                        <table style="margin: 1em auto;">
+                            <tr>
+                                <th>명언</th>
+                                <td>
+                                    <textarea id="content" style="resize: none; width: 100%;"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>말한 사람</th>
+                                <td>
+                                    <input id="author" type="text">
+                                </td>
+                            </tr>
+                        </table>
+                        <div style="text-align: left; font-size: 0.9em; font-weight: bold;">
+                                ※ 여기에서 추가되는 명언은 오늘의 명언으로 대체되며, 향후 랜덤으로 선택되는 오늘의 명언 중 하나에 포함됩니다.
+                        </div>
+                        <div class="mbr-section-btn">
+                            <a class="btn btn-md btn-primary display-4" href="javascript:void(0);" onclick="saveWs();">
+                                저장
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -31,5 +46,28 @@
 
         <section th:replace="layout/footer::footer"></section>
         <section th:replace="layout/jsImport::jsImport"></section>
+        
+        <script type="text/javascript">
+            function saveWs() {
+            	var content = document.getElementById('content').value;
+            	var author = document.getElementById('author').value;
+            	
+            	var data = {
+           			content : content,
+                    author : author,
+                    type : 0 // 일단 default로 0(SELF_DEV)로 설정	
+            	}
+            	
+            	$.ajax({
+                    url: '/ws-service/wsPsls',
+                    type: 'POST',
+                    data: JSON.stringify(data),
+                    contentType : "application/json; charset=UTF-8",
+                    success: function() {
+                    	window.location.href = '/';
+                    }
+                });
+            }
+        </script>
     </body>
 </html>

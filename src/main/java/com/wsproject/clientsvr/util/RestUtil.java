@@ -1,5 +1,6 @@
 package com.wsproject.clientsvr.util;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,7 +13,6 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.wsproject.clientsvr.config.CustomProperties;
 import com.wsproject.clientsvr.dto.TokenInfo;
 
 import lombok.extern.slf4j.Slf4j;
@@ -28,11 +28,11 @@ public class RestUtil {
 	private HttpMethod method;
 	private HttpHeaders headers;
 	private TokenInfo tokenInfo;
-	private Map<String, Object[]> queryParams;
+	private Map<String, String[]> queryParams;
 	private Object bodyParam;
 	
 	public RestUtil(String url, HttpMethod method, HttpHeaders headers, TokenInfo tokenInfo, 
-					Map<String, Object[]> queryParams, Object bodyParam) {
+					Map<String, String[]> queryParams, Object bodyParam) {
 		this.url = url;
 		this.method = method;
 		this.headers = headers;
@@ -46,12 +46,9 @@ public class RestUtil {
 	 */
 	public ResponseEntity<String> exchange() {
 		log.info("exchange started - url : {}", url);
-		CustomProperties properties = CommonUtil.getBean(CustomProperties.class);
 		
-		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(properties.getApiBaseUri() + url);
-		queryParams.entrySet().forEach(entry -> builder.queryParam(entry.getKey(), entry.getValue()));
-		
-		log.info("Full URL : {}", builder.toUriString());
+		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url);
+		queryParams.entrySet().forEach(entry -> builder.queryParam(entry.getKey(), Arrays.asList(entry.getValue())));
 		
 		headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + tokenInfo.getAccess_token());
 		
@@ -88,7 +85,7 @@ public class RestUtil {
 		private HttpMethod method;
 		private HttpHeaders headers = new HttpHeaders();
 		private TokenInfo tokenInfo;
-		private Map<String, Object[]> queryParams = new HashMap<>();
+		private Map<String, String[]> queryParams = new HashMap<>();
 		private Object bodyParam;
 		
 		public RestUtilBuilder() {
@@ -166,11 +163,16 @@ public class RestUtil {
 		 * @param values
 		 * @return
 		 */
-		public RestUtilBuilder queryParams(String key, Object... values) {
+		public RestUtilBuilder queryParam(String key, String... values) {
 			queryParams.put(key, values);
 			return this;
 		}
-
+		
+		public RestUtilBuilder queryParams(Map<String, String[]> queryParams) {
+			this.queryParams = queryParams;
+			return this;
+		}
+		
 		public RestUtilBuilder bodyParam(Object bodyParam) {
 			this.bodyParam = bodyParam;
 			return this;

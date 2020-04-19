@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="layout/mainHead::mainHead"></head>
+    <body>
+        <section th:replace="layout/header::header"></section>
+        
+        <section class="cid-qTkA127IK8 mbr-fullscreen mbr-parallax-background" id="header2-1">
+            <div class="container align-center">
+                <div class="row justify-content-md-center">
+                    <div class="mbr-black col-md-10" style="background-color: rgba(255, 255, 255, 0.6); margin: 8px; border-radius: 8px;">
+                        <h1 class="mbr-section-title mbr-bold pb-3 mbr-fonts-style display-2" style="margin-top: 1rem;">
+                            내가 추가한 명언
+                        </h1>
+                        
+                        <table class="table table-striped table-hover">
+                            <colgroup>
+                                <col width="60%">
+                                <col width="40%">
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th>명언</th>
+								    <th>말한 사람</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="mbr-arrow hidden-sm-down" aria-hidden="true">
+                <a href="#next">
+                    <i class="mbri-down mbr-iconfont"></i>
+                </a>
+            </div>
+        </section>
+
+        <section th:replace="layout/footer::footer"></section>
+        <section th:replace="layout/jsImport::jsImport"></section>
+        
+        <script type="text/javascript" th:inline="javascript">
+        /* <![CDATA[ */
+            var apiBaseUri = /*[[ ${@environment.getProperty('custom.api-base-uri')} ]]*/;
+            var userIdx = /*[[ ${userIdx} ]]*/;
+            
+            window.onload = function() {
+            	$.ajax({
+                    url: '/api',
+                    type: 'GET',
+                    data: {
+                    	apiUrl: apiBaseUri + '/ws-service/v1.0/users/' + userIdx + '/wses',
+                    	page: 0,
+                    	size: 5
+                    },
+                    success: function(result) {
+                    	var retVal = JSON.parse(result);
+                    	var wsPslList = retVal._embedded.wsPslDtoList;
+                    	var rows = '';
+                    	
+                    	for(var i = 0; i < wsPslList.length; i++) {
+                    		rows += '<tr>' +
+                    		            '<td>' + wsPslList[i].content + '</td>' +
+                    		            '<td>' + wsPslList[i].author + '</td>' +
+                    		        '</tr>';
+                    	}
+                    	
+                    	$('#tableBody').append(rows);
+                    }
+                });
+            }
+        /* ]]> */
+        </script>
+    </body>
+</html>

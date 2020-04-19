@@ -18,5 +18,20 @@ var commonJS = {
      
         document.body.appendChild(form);
         form.submit();
+	},
+	
+	requestAtApi : function(apiUrl, callbackFunc, method) {
+		method = method || 'GET'; // 전송 방식 기본값을 GET로
+		
+		$.ajax({
+			url: '/api',
+            type: method,
+            data: {
+                apiUrl: apiUrl
+            },
+            success: function(result) {
+            	callbackFunc(result);
+            }
+		});
 	}
 }

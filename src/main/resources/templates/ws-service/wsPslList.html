@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
     <head th:replace="layout/mainHead::mainHead"></head>
-    <body>
+    <body id="body" style="overflow: scroll;">
         <section th:replace="layout/header::header"></section>
         
-        <section class="cid-qTkA127IK8 mbr-fullscreen mbr-parallax-background" id="header2-1">
+        <section class="mbr-fullscreen" id="header2-1">
             <div class="container align-center">
                 <div class="row justify-content-md-center">
                     <div class="mbr-black col-md-10" style="background-color: rgba(255, 255, 255, 0.6); margin: 8px; border-radius: 8px;">
@@ -23,8 +23,7 @@
 								    <th>말한 사람</th>
                                 </tr>
                             </thead>
-                            <tbody id="tableBody">
-                            </tbody>
+                            <tbody id="tableBody"></tbody>
                         </table>
                     </div>
                 </div>
@@ -43,31 +42,50 @@
         /* <![CDATA[ */
             var apiBaseUri = /*[[ ${@environment.getProperty('custom.api-base-uri')} ]]*/;
             var userIdx = /*[[ ${userIdx} ]]*/;
+            var defaultSize = 5;
+            var nextUri = null;
             
             window.onload = function() {
-            	$.ajax({
-                    url: '/api',
-                    type: 'GET',
-                    data: {
-                    	apiUrl: apiBaseUri + '/ws-service/v1.0/users/' + userIdx + '/wses',
-                    	page: 0,
-                    	size: 5
-                    },
-                    success: function(result) {
-                    	var retVal = JSON.parse(result);
-                    	var wsPslList = retVal._embedded.wsPslDtoList;
-                    	var rows = '';
-                    	
-                    	for(var i = 0; i < wsPslList.length; i++) {
-                    		rows += '<tr>' +
-                    		            '<td>' + wsPslList[i].content + '</td>' +
-                    		            '<td>' + wsPslList[i].author + '</td>' +
-                    		        '</tr>';
-                    	}
-                    	
-                    	$('#tableBody').append(rows);
+            	commonJS.requestAtApi(apiBaseUri + '/ws-service/v1.0/users/' + userIdx + '/wses?page=0&size=' + defaultSize, setWsList);
+            	setScrollEvent();
+            }
+            
+            function setWsList(result) {
+            	var retVal = JSON.parse(result);
+            	
+            	if(retVal._embedded) {
+            		var wsPslList = retVal._embedded.wsPslDtoList;
+                    var rows = '';
+                    
+                    for(var i = 0; i < wsPslList.length; i++) {
+                        rows += '<tr>' +
+                                    '<td>' + wsPslList[i].content + '</td>' +
+                                    '<td>' + wsPslList[i].author + '</td>' +
+                                '</tr>';
                     }
-                });
+                    
+                    $('#tableBody').append(rows);
+                    
+                    if(retVal._links.next) {
+                        nextUri = retVal._links.next.href;
+                    } else {
+                        nextUri = null;
+                    }
+            	}
+            }
+            
+            function setScrollEvent() {
+            	$(window).scroll(function() {
+            		if(nextUri != null) {
+            			var scrollT = $(this).scrollTop(); //스크롤바의 상단위치
+                        var scrollH = $(this).height();
+                        var contentH = $('#body').height();
+
+                        if(scrollT + scrollH + 1 >= contentH) { // 스크롤바가 아래 쪽에 위치할 때
+                        	commonJS.requestAtApi(nextUri, setWsList);
+                        }
+            		}
+            	});
             }
         /* ]]> */
         </script>

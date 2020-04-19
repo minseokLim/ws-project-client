@@ -1,6 +1,5 @@
 package com.wsproject.clientsvr.controller;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,10 +33,7 @@ public class GWController {
 		
 		String apiUrl = request.getParameter(API_URL);
 		
-		Map<String, String[]> queryParams = new HashMap<String, String[]>(request.getParameterMap());
-		queryParams.remove(API_URL);
-		
-		RestUtil restUtil = RestUtil.builder().url(apiUrl).get().tokenInfo(tokenInfo).queryParams(queryParams).build();
+		RestUtil restUtil = RestUtil.builder().url(apiUrl).get().tokenInfo(tokenInfo).build();
 		
 		ResponseEntity<String> entity = restUtil.exchange();
 		

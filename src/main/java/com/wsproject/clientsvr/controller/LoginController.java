@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.google.gson.Gson;
+import com.wsproject.clientsvr.config.CustomProperties;
 import com.wsproject.clientsvr.domain.User;
 import com.wsproject.clientsvr.dto.TokenInfo;
 import com.wsproject.clientsvr.dto.UserInfo;
@@ -27,7 +28,9 @@ public class LoginController {
 	private Gson gson;
 	
 	private TokenUtil tokenUtil;
-		
+	
+	private CustomProperties properties;
+	
 	/** 로그인 화면
 	 * @return
 	 */
@@ -47,7 +50,7 @@ public class LoginController {
 		String redirectUri = request.getRequestURL().toString();
 		
 		TokenInfo tokenInfo = tokenUtil.getTokenInfo(code, redirectUri);
-		RestUtil restUtil = RestUtil.builder().url("/user-service/v1.0/users/me").get().tokenInfo(tokenInfo).build();
+		RestUtil restUtil = RestUtil.builder().url(properties.getApiBaseUri() + "/user-service/v1.0/users/me").get().tokenInfo(tokenInfo).build();
 		ResponseEntity<String> result = restUtil.exchange();
 		
 		User user = gson.fromJson(result.getBody(), User.class);

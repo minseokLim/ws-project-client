@@ -27,7 +27,7 @@
                             </tr>
                         </table>
                         <div style="text-align: left; font-size: 0.9em; font-weight: bold;">
-                                ※ 여기에서 추가되는 명언은 오늘의 명언을 대체하며, 향후 랜덤으로 선택되는 오늘의 명언 중 하나에 포함됩니다.
+                                ※ 추가되는 명언은 향후 랜덤으로 선택되는 오늘의 명언 중 하나에 포함됩니다.
                         </div>
                         <div class="mbr-section-btn">
                             <a class="btn btn-md btn-primary display-4" href="javascript:void(0);" onclick="saveWs();">
@@ -47,19 +47,25 @@
         <section th:replace="layout/footer::footer"></section>
         <section th:replace="layout/jsImport::jsImport"></section>
         
-        <script type="text/javascript">
+        <script type="text/javascript" th:inline="javascript">
+        /* <![CDATA[ */
+            var apiBaseUri = /*[[ ${@environment.getProperty('custom.api-base-uri')} ]]*/;
+            var userIdx = /*[[ ${userIdx} ]]*/;
+            
             function saveWs() {
             	var content = document.getElementById('content').value;
             	var author = document.getElementById('author').value;
             	
             	var data = {
+            		apiUrl : apiBaseUri + '/ws-service/v1.0/users/' + userIdx + '/wses',
+            		ownerIdx : userIdx,
            			content : content,
                     author : author,
                     type : 0 // 일단 default로 0(SELF_DEV)로 설정	
             	}
             	
             	$.ajax({
-                    url: '/ws-service/wsPsls',
+                    url: '/api',
                     type: 'POST',
                     data: JSON.stringify(data),
                     contentType : "application/json; charset=UTF-8",
@@ -69,6 +75,7 @@
                     }
                 });
             }
+        /* ]]> */
         </script>
     </body>
 </html>

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.google.gson.Gson;
+import com.wsproject.clientsvr.config.CustomProperties;
 import com.wsproject.clientsvr.dto.TodaysWs;
 import com.wsproject.clientsvr.dto.TokenInfo;
 import com.wsproject.clientsvr.dto.UserInfo;
@@ -21,6 +22,8 @@ public class WsController {
 	
 	private Gson gson;
 	
+	private CustomProperties properties;
+	
 	/** 오늘의 명언 메인화면
 	 * @param userCookie
 	 * @param tokenCookie
@@ -33,8 +36,8 @@ public class WsController {
 		UserInfo userInfo = CommonUtil.extractCookie(userCookie, UserInfo.class);
 		TokenInfo tokenInfo = CommonUtil.extractCookie(tokenCookie, TokenInfo.class);
 		
-		RestUtil restUtil = RestUtil.builder().url("/ws-service/v1.0/users/" + userInfo.getIdx() + "/todaysWs").get().tokenInfo(tokenInfo).build();
-				
+		RestUtil restUtil = RestUtil.builder().url(properties.getApiBaseUri() + "/ws-service/v1.0/users/" + userInfo.getIdx() + "/todaysWs").get().tokenInfo(tokenInfo).build();
+		
 		ResponseEntity<String> entity = restUtil.exchange();
 		
 		TodaysWs todaysWs = gson.fromJson(entity.getBody(), TodaysWs.class);
@@ -45,7 +48,20 @@ public class WsController {
 	}
 	
 	@GetMapping("/ws-service/saveWsPsl")
-	public String saveWsPsl() {
+	public String saveWsPsl(@CookieValue("userInfo") String userCookie, Model model) {
+		
+		UserInfo userInfo = CommonUtil.extractCookie(userCookie, UserInfo.class);
+		model.addAttribute("userIdx", userInfo.getIdx());
+		
 		return "ws-service/saveWsPsl";
+	}
+	
+	@GetMapping("/ws-service/wsPslList")
+	public String wsPslList(@CookieValue("userInfo") String userCookie, Model model) {
+		
+		UserInfo userInfo = CommonUtil.extractCookie(userCookie, UserInfo.class);
+		model.addAttribute("userIdx", userInfo.getIdx());
+		
+		return "ws-service/wsPslList";
 	}
 }

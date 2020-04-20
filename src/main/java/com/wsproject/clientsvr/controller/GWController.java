@@ -4,7 +4,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,9 +34,7 @@ public class GWController {
 		
 		RestUtil restUtil = RestUtil.builder().url(apiUrl).get().tokenInfo(tokenInfo).build();
 		
-		ResponseEntity<String> entity = restUtil.exchange();
-		
-		return new ResponseEntity<String>(entity.getBody(), HttpStatus.OK);
+		return restUtil.exchange();
 	}
 	
 	@PostMapping
@@ -50,9 +47,7 @@ public class GWController {
 		
 		RestUtil restUtil = RestUtil.builder().url(apiUrl).post().tokenInfo(tokenInfo).bodyParam(bodyParam).build();
 
-		ResponseEntity<String> entity = restUtil.exchange();
-		
-		return new ResponseEntity<String>(entity.getBody(), HttpStatus.CREATED);
+		return restUtil.exchange();
 	}
 	
 }

@@ -7,7 +7,7 @@
         <section class="mbr-fullscreen" id="header2-1">
             <div class="container align-center">
                 <div class="row justify-content-md-center">
-                    <div class="mbr-black col-md-10" style="background-color: rgba(255, 255, 255, 0.6); margin: 8px; border-radius: 8px;">
+                    <div class="mbr-black col-md-10 mainDiv">
                         <h1 class="mbr-section-title mbr-bold pb-3 mbr-fonts-style display-2" style="margin-top: 1rem;">
                             내가 추가한 명언
                         </h1>
@@ -46,28 +46,34 @@
             var nextUri = null;
             
             window.onload = function() {
-            	commonJS.requestAtApi(apiBaseUri + '/ws-service/v1.0/users/' + userIdx + '/wses?page=0&size=' + defaultSize, setWsList);
+            	var apiUrl = apiBaseUri + '/ws-service/v1.0/users/' + userIdx + '/wses?page=0&size=' + defaultSize + '&sort=createdDate,desc';
+            	commonJS.requestAtApi(apiUrl, setWsList);
             	setScrollEvent();
             }
             
             function setWsList(result) {
-            	var retVal = JSON.parse(result);
             	
-            	if(retVal._embedded) {
-            		var wsPslList = retVal._embedded.wsPslDtoList;
+            	if(result._embedded) {
+            		var wsPslList = result._embedded.wsPslDtoList;
                     var rows = '';
                     
                     for(var i = 0; i < wsPslList.length; i++) {
-                        rows += '<tr>' +
-                                    '<td>' + wsPslList[i].content + '</td>' +
-                                    '<td>' + wsPslList[i].author + '</td>' +
+                    	var content = wsPslList[i].content;
+                    	var author = wsPslList[i].author;
+                    	
+                    	if(content.length > 11) content = content.substring(0, 10) + '...';
+                    	if(author.length > 7) author = author.substring(0, 6) + '...';
+                    	
+                        rows += '<tr data-href="' + wsPslList[i]._links.self.href + '" onclick="viewWsPsl(this);">' +
+                                    '<td>' + content + '</td>' +
+                                    '<td>' + author + '</td>' +
                                 '</tr>';
                     }
                     
                     $('#tableBody').append(rows);
                     
-                    if(retVal._links.next) {
-                        nextUri = retVal._links.next.href;
+                    if(result._links.next) {
+                        nextUri = result._links.next.href;
                     } else {
                         nextUri = null;
                     }
@@ -81,11 +87,16 @@
                         var scrollH = $(this).height();
                         var contentH = $('#body').height();
 
-                        if(scrollT + scrollH + 1 >= contentH) { // 스크롤바가 아래 쪽에 위치할 때
+                        if(scrollT + scrollH + 5 >= contentH) { // 스크롤바가 아래 쪽에 위치할 때
                         	commonJS.requestAtApi(nextUri, setWsList);
                         }
             		}
             	});
+            }
+            
+            function viewWsPsl(obj) {
+            	var apiUrl = obj.getAttribute('data-href');
+            	location.href = "/ws-service/viewWsPsl?apiUrl=" + encodeURIComponent(apiUrl);
             }
         /* ]]> */
         </script>

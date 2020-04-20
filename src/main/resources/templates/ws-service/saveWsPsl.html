@@ -4,10 +4,10 @@
     <body>
         <section th:replace="layout/header::header"></section>
         
-        <section class="cid-qTkA127IK8 mbr-fullscreen mbr-parallax-background" id="header2-1">
+        <section class="mbr-fullscreen" id="header2-1">
             <div class="container align-center">
                 <div class="row justify-content-md-center" >
-                    <div class="mbr-black col-md-10" style="background-color: rgba(255, 255, 255, 0.6); margin: 8px; border-radius: 8px; padding: 2em;">
+                    <div class="mbr-black col-md-10 mainDiv" style="padding: 2em;">
                         <h1 class="mbr-section-title mbr-bold pb-3 mbr-fonts-style display-2">
                             명언 추가
                         </h1>
@@ -30,7 +30,7 @@
                                 ※ 추가되는 명언은 향후 랜덤으로 선택되는 오늘의 명언 중 하나에 포함됩니다.
                         </div>
                         <div class="mbr-section-btn">
-                            <a class="btn btn-md btn-primary display-4" href="javascript:void(0);" onclick="saveWs();">
+                            <a class="btn btn-sm btn-primary display-4" href="javascript:void(0);" onclick="saveWs();" style="margin-top: 1.5em;">
                                 저장
                             </a>
                         </div>
@@ -56,6 +56,18 @@
             	var content = document.getElementById('content').value;
             	var author = document.getElementById('author').value;
             	
+            	if(content.trim() === '') {
+            		alert('명언을 입력해주세요.');
+            		$('#content').focus();
+            		return;
+            	}
+            	
+            	if(author.trim() === '') {
+                    alert('말한 사람을 입력해주세요.');
+                    $('#author').focus();
+                    return;
+                }
+            	
             	var data = {
             		apiUrl : apiBaseUri + '/ws-service/v1.0/users/' + userIdx + '/wses',
             		ownerIdx : userIdx,
@@ -71,7 +83,7 @@
                     contentType : "application/json; charset=UTF-8",
                     success: function() {
                     	alert('저장되었습니다.');
-                    	window.location.href = '/';
+                    	window.location.href = '/ws-service/wsPslList';
                     }
                 });
             }

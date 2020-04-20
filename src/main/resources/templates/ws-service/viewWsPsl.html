@@ -9,11 +9,11 @@
 		        <div class="row justify-content-md-center">
 		            <div class="mbr-black col-md-10 mainDiv">
 		                <h1 class="mbr-section-title mbr-bold pb-3 mbr-fonts-style display-2" style="margin-top: 1rem;">
-		                    오늘의 명언
+		                    내가 추가한 명언
 		                </h1>
 		                
-		                <p th:text="${todaysWs.content}" style="text-align: left; font-weight: bold;" class="mbr-text pb-3 mbr-fonts-style display-5"></p>
-		                <p th:text="|- ${todaysWs.author}|" style="text-align: right; font-weight: bold;"></p>
+		                <p id="content" style="text-align: left; font-weight: bold;" class="mbr-text pb-3 mbr-fonts-style display-5"></p>
+		                <p id="author" style="text-align: right; font-weight: bold;"></p>
 		                
 		                <!-- <div class="mbr-section-btn">
 		                    <a class="btn btn-md btn-secondary display-4" href="/">LEARN MORE</a>
@@ -31,5 +31,21 @@
 
         <section th:replace="layout/footer::footer"></section>
         <section th:replace="layout/jsImport::jsImport"></section>
+        
+        <script type="text/javascript" th:inline="javascript">
+        /* <![CDATA[ */
+        	
+        	var apiUrl = /*[[ ${param.apiUrl} ]]*/;
+        
+        	window.onload = function() {
+        		commonJS.requestAtApi(apiUrl[0], setWsPsl);
+        	}
+        	
+        	function setWsPsl(result) {
+        		$('#content').text(result.content);
+        		$('#author').text('- ' + result.author);
+        	}
+        /* ]]> */
+        </script>
     </body>
 </html>

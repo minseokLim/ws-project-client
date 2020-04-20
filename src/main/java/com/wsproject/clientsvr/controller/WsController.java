@@ -64,4 +64,9 @@ public class WsController {
 		
 		return "ws-service/wsPslList";
 	}
+	
+	@GetMapping("/ws-service/viewWsPsl")
+	public String viewWsPsl() {
+		return "ws-service/viewWsPsl";
+	}
 }

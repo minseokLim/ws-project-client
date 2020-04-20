@@ -53,23 +53,27 @@
             var userIdx = /*[[ ${userIdx} ]]*/;
             
             function saveWs() {
-            	var content = document.getElementById('content').value;
-            	var author = document.getElementById('author').value;
-            	
-            	if(!isValidated(content, author)) {
-            		return;
+            	try {
+            		var content = document.getElementById('content').value;
+                    var author = document.getElementById('author').value;
+                    
+                    if(!isValidated(content, author)) {
+                        return;
+                    }
+                    
+                    var apiUrl = apiBaseUri + '/ws-service/v1.0/users/' + userIdx + '/wses';
+                    
+                    var data = {
+                        ownerIdx : userIdx,
+                        content : content,
+                        author : author,
+                        type : 0 // 일단 default로 0(SELF_DEV)로 설정 
+                    }
+                    
+                    commonJS.postRequestAtApi(apiUrl, saveWsComplete, data);
+            	} catch (e) {
+            		alert(e.message);
             	}
-            	
-            	var apiUrl = apiBaseUri + '/ws-service/v1.0/users/' + userIdx + '/wses';
-            	
-            	var data = {
-            		ownerIdx : userIdx,
-           			content : content,
-                    author : author,
-                    type : 0 // 일단 default로 0(SELF_DEV)로 설정	
-            	}
-            	
-            	commonJS.postRequestAtApi(apiUrl, saveWsComplete, data);
             }
             
             function saveWsComplete() {

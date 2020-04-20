@@ -46,9 +46,13 @@
             var nextUri = null;
             
             window.onload = function() {
-            	var apiUrl = apiBaseUri + '/ws-service/v1.0/users/' + userIdx + '/wses?page=0&size=' + defaultSize + '&sort=createdDate,desc';
-            	commonJS.getRequestAtApi(apiUrl, setWsList);
-            	setScrollEvent();
+            	try {
+            		var apiUrl = apiBaseUri + '/ws-service/v1.0/users/' + userIdx + '/wses?page=0&size=' + defaultSize + '&sort=createdDate,desc';
+                    commonJS.getRequestAtApi(apiUrl, setWsList);
+                    setScrollEvent();
+            	} catch (e) {
+                    alert(e.message);
+                }
             }
             
             function setWsList(result) {

@@ -56,36 +56,41 @@
             	var content = document.getElementById('content').value;
             	var author = document.getElementById('author').value;
             	
-            	if(content.trim() === '') {
-            		alert('명언을 입력해주세요.');
-            		$('#content').focus();
+            	if(!isValidated(content, author)) {
             		return;
             	}
             	
-            	if(author.trim() === '') {
-                    alert('말한 사람을 입력해주세요.');
-                    $('#author').focus();
-                    return;
-                }
+            	var apiUrl = apiBaseUri + '/ws-service/v1.0/users/' + userIdx + '/wses';
             	
             	var data = {
-            		apiUrl : apiBaseUri + '/ws-service/v1.0/users/' + userIdx + '/wses',
             		ownerIdx : userIdx,
            			content : content,
                     author : author,
                     type : 0 // 일단 default로 0(SELF_DEV)로 설정	
             	}
             	
-            	$.ajax({
-                    url: '/api',
-                    type: 'POST',
-                    data: JSON.stringify(data),
-                    contentType : "application/json; charset=UTF-8",
-                    success: function() {
-                    	alert('저장되었습니다.');
-                    	window.location.href = '/ws-service/wsPslList';
-                    }
-                });
+            	commonJS.postRequestAtApi(apiUrl, saveWsComplete, data);
+            }
+            
+            function saveWsComplete() {
+            	alert('저장되었습니다.');
+                window.location.href = '/ws-service/wsPslList';
+            }
+            
+            function isValidated(content, author) {
+            	if(content.trim() === '') {
+                    alert('명언을 입력해주세요.');
+                    $('#content').focus();
+                    return false;
+                }
+                
+                if(author.trim() === '') {
+                    alert('말한 사람을 입력해주세요.');
+                    $('#author').focus();
+                    return false;
+                }
+                
+                return true;
             }
         /* ]]> */
         </script>

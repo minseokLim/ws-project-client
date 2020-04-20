@@ -1,9 +1,7 @@
 var commonJS = {
-	post_to_url : function(path, params, method) {
-		method = method || "post"; // 전송 방식 기본값을 POST로
-        
+	post_to_url : function(path, params) {
         var form = document.createElement("form");
-        form.setAttribute("method", method);
+        form.setAttribute("method", "post");
         form.setAttribute("action", path);
      
         //히든으로 값을 주입시킨다.
@@ -20,12 +18,10 @@ var commonJS = {
         form.submit();
 	},
 	
-	requestAtApi : function(apiUrl, callbackFunc, method) {
-		method = method || 'GET'; // 전송 방식 기본값을 GET로
-		
+	getRequestAtApi : function(apiUrl, callbackFunc) {
 		$.ajax({
 			url: '/api',
-            type: method,
+            type: 'GET',
             data: {
                 apiUrl: apiUrl
             },
@@ -33,5 +29,20 @@ var commonJS = {
             	callbackFunc(result);
             }
 		});
+	},
+	
+	postRequestAtApi : function(apiUrl, callbackFunc, data) {
+		
+		data.apiUrl = apiUrl;
+		
+		$.ajax({
+            url: '/api',
+            type: 'POST',
+            data: JSON.stringify(data),
+            contentType : "application/json; charset=UTF-8",
+            success: function(result) {
+            	callbackFunc(result);
+            }
+        });
 	}
 }

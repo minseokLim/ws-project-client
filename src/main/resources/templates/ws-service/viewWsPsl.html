@@ -34,11 +34,10 @@
         
         <script type="text/javascript" th:inline="javascript">
         /* <![CDATA[ */
-        	
         	var apiUrl = /*[[ ${param.apiUrl} ]]*/;
         
         	window.onload = function() {
-        		commonJS.requestAtApi(apiUrl[0], setWsPsl);
+        		commonJS.getRequestAtApi(apiUrl[0], setWsPsl);
         	}
         	
         	function setWsPsl(result) {

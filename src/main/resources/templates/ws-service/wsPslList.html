@@ -47,12 +47,11 @@
             
             window.onload = function() {
             	var apiUrl = apiBaseUri + '/ws-service/v1.0/users/' + userIdx + '/wses?page=0&size=' + defaultSize + '&sort=createdDate,desc';
-            	commonJS.requestAtApi(apiUrl, setWsList);
+            	commonJS.getRequestAtApi(apiUrl, setWsList);
             	setScrollEvent();
             }
             
             function setWsList(result) {
-            	
             	if(result._embedded) {
             		var wsPslList = result._embedded.wsPslDtoList;
                     var rows = '';
@@ -88,7 +87,7 @@
                         var contentH = $('#body').height();
 
                         if(scrollT + scrollH + 5 >= contentH) { // 스크롤바가 아래 쪽에 위치할 때
-                        	commonJS.requestAtApi(nextUri, setWsList);
+                        	commonJS.getRequestAtApi(nextUri, setWsList);
                         }
             		}
             	});

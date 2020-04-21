@@ -32,6 +32,7 @@
         	var apiUrl = /*[[ ${param.apiUrl} ]]*/;
             var content;
             var author;
+            var userIdx;
             
         	window.onload = function() {
         		commonJS.requestAtApi(apiUrl[0], setWsPsl);
@@ -42,14 +43,16 @@
         		
         		content = retVal.content;
         		author = retVal.author;
-        		
+        		userIdx = retVal.ownerIdx;
+        			
         		$('#content').text(content);
         		$('#author').text('- ' + author);
         	}
         	
         	function updateWsPsl() {
         		location.href = '/ws-service/modifyWsPsl?apiUrl=' + encodeURIComponent(apiUrl) 
-        				+ '&content=' + encodeURIComponent(content) + '&author=' + encodeURIComponent(author);
+        				+ '&content=' + encodeURIComponent(content) + '&author=' + encodeURIComponent(author)
+        				+ '&userIdx=' + encodeURIComponent(userIdx);
         	}
         	
         	function deleteWsPsl() {
@@ -59,7 +62,7 @@
         	}
         	
         	function deleteWsPslComplete() {
-                window.location.href = '/ws-service/wsPslList';
+                location.href = '/ws-service/wsPslList';
             }
         /* ]]> */
         </script>

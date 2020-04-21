@@ -50,5 +50,22 @@ var commonJS = {
             	alert("code : " + request.status + "\n" + "message : " + request.responseText + "\n" + "error : " + error);
             }
         });
+	},
+	
+	putRequestAtApi : function(apiUrl, callbackFunc, data) {
+		data.apiUrl = apiUrl;
+		
+		$.ajax({
+            url: '/api',
+            type: 'PUT',
+            data: JSON.stringify(data),
+            contentType : "application/json; charset=UTF-8",
+            success: function(result) {
+            	callbackFunc(result);
+            },
+            error:function(request, status, error){
+            	alert("code : " + request.status + "\n" + "message : " + request.responseText + "\n" + "error : " + error);
+            }
+        });
 	}
 }

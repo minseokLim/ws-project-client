@@ -22,11 +22,6 @@
 		            </div>
 		        </div>
 		    </div>
-		    <div class="mbr-arrow hidden-sm-down" aria-hidden="true">
-		        <a href="#next">
-		            <i class="mbri-down mbr-iconfont"></i>
-		        </a>
-		    </div>
 		</section>
 
         <section th:replace="layout/footer::footer"></section>
@@ -41,8 +36,10 @@
         	}
         	
         	function setWsPsl(result) {
-        		$('#content').text(result.content);
-        		$('#author').text('- ' + result.author);
+        		var retVal = JSON.parse(result);
+        		
+        		$('#content').text(retVal.content);
+        		$('#author').text('- ' + retVal.author);
         	}
         /* ]]> */
         </script>

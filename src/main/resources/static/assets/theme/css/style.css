@@ -620,7 +620,7 @@ blockquote {
 /*! Arrow Down */
 .mbr-arrow {
   position: absolute;
-  bottom: 45px;
+  bottom: 10px;
   left: 50%;
   width: 60px;
   height: 60px;
@@ -764,11 +764,11 @@ blockquote {
   color: #ffffff;
 }
 
-@media (max-width: 767px) {
+/* @media (max-width: 767px) {
   .mbr-arrow {
     display: none;
   }
-}
+} */
 .navbar {
   display: -webkit-flex;
   -webkit-flex-wrap: wrap;

@@ -32,7 +32,6 @@ public class WsController {
 	 */
 	@GetMapping(value = {"/ws-service/main", "/"})
 	public String main(@CookieValue("userInfo") String userCookie, @CookieValue("tokenInfo") String tokenCookie, Model model) {
-		
 		UserInfo userInfo = CommonUtil.extractCookie(userCookie, UserInfo.class);
 		TokenInfo tokenInfo = CommonUtil.extractCookie(tokenCookie, TokenInfo.class);
 		
@@ -49,18 +48,25 @@ public class WsController {
 	
 	@GetMapping("/ws-service/saveWsPsl")
 	public String saveWsPsl(@CookieValue("userInfo") String userCookie, Model model) {
-		
 		UserInfo userInfo = CommonUtil.extractCookie(userCookie, UserInfo.class);
-		model.addAttribute("userIdx", userInfo.getIdx());
+		
+		Long userIdx = userInfo.getIdx();
+		String apiUrl = properties.getApiBaseUri() + "/ws-service/v1.0/users/" + userIdx + "/wses";
+		
+		model.addAttribute("apiUrl", apiUrl);
+		model.addAttribute("userIdx", userIdx);
 		
 		return "ws-service/saveWsPsl";
 	}
 	
 	@GetMapping("/ws-service/wsPslList")
 	public String wsPslList(@CookieValue("userInfo") String userCookie, Model model) {
-		
 		UserInfo userInfo = CommonUtil.extractCookie(userCookie, UserInfo.class);
-		model.addAttribute("userIdx", userInfo.getIdx());
+		
+		Long userIdx = userInfo.getIdx();
+		String apiUrl = properties.getApiBaseUri() + "/ws-service/v1.0/users/" + userIdx + "/wses";
+		
+		model.addAttribute("apiUrl", apiUrl);
 		
 		return "ws-service/wsPslList";
 	}
@@ -68,5 +74,12 @@ public class WsController {
 	@GetMapping("/ws-service/viewWsPsl")
 	public String viewWsPsl() {
 		return "ws-service/viewWsPsl";
+	}
+	
+	@GetMapping("/ws-service/modifyWsPsl")
+	public String modifyWsPsl(@CookieValue("userInfo") String userCookie, Model model) {
+		UserInfo userInfo = CommonUtil.extractCookie(userCookie, UserInfo.class);
+		model.addAttribute("userIdx", userInfo.getIdx());
+		return "ws-service/modifyWsPsl";
 	}
 }

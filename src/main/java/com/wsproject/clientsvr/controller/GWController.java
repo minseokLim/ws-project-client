@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -54,4 +55,18 @@ public class GWController {
 		return new ResponseEntity<String>(entity.getBody(), entity.getStatusCode());
 	}
 	
+	@PutMapping
+	public ResponseEntity<String> putRequestAtApi(@CookieValue("tokenInfo") String tokenCookie, @RequestBody Map<String, Object> bodyParam) {
+		
+		TokenInfo tokenInfo = CommonUtil.extractCookie(tokenCookie, TokenInfo.class);
+		
+		String apiUrl = (String) bodyParam.get(API_URL);
+		bodyParam.remove(API_URL);
+		
+		RestUtil restUtil = RestUtil.builder().url(apiUrl).put().tokenInfo(tokenInfo).bodyParam(bodyParam).build();
+
+		ResponseEntity<String> entity = restUtil.exchange();
+		
+		return new ResponseEntity<String>(entity.getBody(), entity.getStatusCode());
+	}
 }

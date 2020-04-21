@@ -16,7 +16,7 @@
 		                <p id="author" style="text-align: right; font-weight: bold;"></p>
 		                
 		                <div class="mbr-section-btn">
-		                    <a class="btn btn-sm btn-primary display-4" href="/">수정</a>
+		                    <a class="btn btn-sm btn-primary display-4" href="javascript:void(0);" onclick="updateWsPsl();">수정</a>
 		                    <a class="btn btn-sm btn-secondary display-4" href="/">삭제</a>
 		                </div>
 		            </div>
@@ -30,7 +30,9 @@
         <script type="text/javascript" th:inline="javascript">
         /* <![CDATA[ */
         	var apiUrl = /*[[ ${param.apiUrl} ]]*/;
-        
+            var content;
+            var author;
+            
         	window.onload = function() {
         		commonJS.getRequestAtApi(apiUrl[0], setWsPsl);
         	}
@@ -38,8 +40,16 @@
         	function setWsPsl(result) {
         		var retVal = JSON.parse(result);
         		
-        		$('#content').text(retVal.content);
-        		$('#author').text('- ' + retVal.author);
+        		content = retVal.content;
+        		author = retVal.author;
+        		
+        		$('#content').text(content);
+        		$('#author').text('- ' + author);
+        	}
+        	
+        	function updateWsPsl() {
+        		location.href = '/ws-service/modifyWsPsl?apiUrl=' + encodeURIComponent(apiUrl) 
+        				+ '&content=' + encodeURIComponent(content) + '&author=' + encodeURIComponent(author);
         	}
         /* ]]> */
         </script>

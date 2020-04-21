@@ -28,7 +28,7 @@
                     </div>
                 </div>
             </div>
-            <div class="mbr-arrow hidden-sm-down" aria-hidden="true">
+            <div id="nextArrow" class="mbr-arrow hidden-sm-down" aria-hidden="true" style="display: none;">
                 <a href="javascript:void(0);" onclick="nextPage();">
                     <i class="mbri-down mbr-iconfont"></i>
                 </a>
@@ -40,14 +40,12 @@
         
         <script type="text/javascript" th:inline="javascript">
         /* <![CDATA[ */
-            var apiBaseUri = /*[[ ${@environment.getProperty('custom.api-base-uri')} ]]*/;
-            var userIdx = /*[[ ${userIdx} ]]*/;
+            var apiUrl = /*[[ ${apiUrl} ]]*/;
             var defaultSize = 5;
             var nextUri = null;
             
             window.onload = function() {
-            	var apiUrl = apiBaseUri + '/ws-service/v1.0/users/' + userIdx + '/wses?page=0&size=' + defaultSize + '&sort=createdDate,desc';
-            	commonJS.getRequestAtApi(apiUrl, setWsList);
+            	commonJS.getRequestAtApi(apiUrl + '?page=0&size=' + defaultSize + '&sort=id,desc', setWsList);
             	// setScrollEvent();
             }
             
@@ -75,9 +73,15 @@
                     
                     if(retVal._links.next) {
                         nextUri = retVal._links.next.href;
+                        document.getElementById('nextArrow').style.display = '';
                     } else {
                         nextUri = null;
+                        document.getElementById('nextArrow').style.display = 'none';
                     }
+            	} else {
+            		if(document.getElementById('tableBody').childNodes.length === 0) {
+            			$('#tableBody').append('<tr><td colspan="2">데이터가 없습니다.</td></tr>');
+            		}
             	}
             }
             

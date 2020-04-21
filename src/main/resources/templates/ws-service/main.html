@@ -12,13 +12,9 @@
 		                    오늘의 명언
 		                </h1>
 		                
-		                <p th:text="${todaysWs.content}" style="text-align: left; font-weight: bold;" class="mbr-text pb-3 mbr-fonts-style display-5"></p>
-		                <p th:text="|- ${todaysWs.author}|" style="text-align: right; font-weight: bold;"></p>
+		                <p id="content" style="text-align: left; font-weight: bold;" class="mbr-text pb-3 mbr-fonts-style display-5"></p>
+		                <p id="author" style="text-align: right; font-weight: bold;"></p>
 		                
-		                <!-- <div class="mbr-section-btn">
-		                    <a class="btn btn-md btn-secondary display-4" href="/">LEARN MORE</a>
-		                    <a class="btn btn-md btn-white-outline display-4" href="/">LIVE DEMO</a>
-		                </div> -->
 		            </div>
 		        </div>
 		    </div>
@@ -26,5 +22,27 @@
 
         <section th:replace="layout/footer::footer"></section>
         <section th:replace="layout/jsImport::jsImport"></section>
+        
+        <script type="text/javascript" th:inline="javascript">
+        /* <![CDATA[ */
+            var apiUrl = /*[[ ${apiUrl} ]]*/;
+            var content;
+            var author;
+            
+            window.onload = function() {
+                commonJS.requestAtApi(apiUrl, setWsPsl);
+            }
+            
+            function setWsPsl(result) {
+                var retVal = JSON.parse(result);
+                
+                content = retVal.content;
+                author = retVal.author;
+                
+                $('#content').text(content);
+                $('#author').text('- ' + author);
+            }
+        /* ]]> */
+        </script>
     </body>
 </html>

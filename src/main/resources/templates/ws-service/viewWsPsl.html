@@ -17,7 +17,7 @@
 		                
 		                <div class="mbr-section-btn">
 		                    <a class="btn btn-sm btn-primary display-4" href="javascript:void(0);" onclick="updateWsPsl();">수정</a>
-		                    <a class="btn btn-sm btn-secondary display-4" href="/">삭제</a>
+		                    <a class="btn btn-sm btn-secondary display-4" href="javascript:void(0);" onclick="deleteWsPsl();">삭제</a>
 		                </div>
 		            </div>
 		        </div>
@@ -34,7 +34,7 @@
             var author;
             
         	window.onload = function() {
-        		commonJS.getRequestAtApi(apiUrl[0], setWsPsl);
+        		commonJS.requestAtApi(apiUrl[0], setWsPsl);
         	}
         	
         	function setWsPsl(result) {
@@ -51,6 +51,16 @@
         		location.href = '/ws-service/modifyWsPsl?apiUrl=' + encodeURIComponent(apiUrl) 
         				+ '&content=' + encodeURIComponent(content) + '&author=' + encodeURIComponent(author);
         	}
+        	
+        	function deleteWsPsl() {
+        		if(confirm('삭제하시겠습니까?')) {
+        			commonJS.requestAtApi(apiUrl[0], deleteWsPslComplete, 'DELETE');
+        		}
+        	}
+        	
+        	function deleteWsPslComplete() {
+                window.location.href = '/ws-service/wsPslList';
+            }
         /* ]]> */
         </script>
     </body>

@@ -20,7 +20,7 @@
         <docker.image.tag>${env.BUILD_NAME}</docker.image.tag>
         <spring-cloud.version>Hoxton.SR1</spring-cloud.version>
 	</properties>
-
+    
 	<dependencies>	
         <dependency>
             <groupId>org.springframework.boot</groupId>

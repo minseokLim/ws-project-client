@@ -48,8 +48,8 @@
             var userIdx = /*[[ ${userIdx} ]]*/;
             
             function saveWs() {
-            	var content = document.getElementById('content').value;
-            	var author = document.getElementById('author').value;
+            	var content = document.getElementById('content').value.trim();
+            	var author = document.getElementById('author').value.trim();
             	
             	if(!isValidated(content, author)) {
             		return;

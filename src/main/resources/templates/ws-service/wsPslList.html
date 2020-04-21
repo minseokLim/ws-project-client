@@ -29,7 +29,7 @@
                 </div>
             </div>
             <div class="mbr-arrow hidden-sm-down" aria-hidden="true">
-                <a href="#next">
+                <a href="javascript:void(0);" onclick="nextPage();">
                     <i class="mbri-down mbr-iconfont"></i>
                 </a>
             </div>
@@ -48,12 +48,14 @@
             window.onload = function() {
             	var apiUrl = apiBaseUri + '/ws-service/v1.0/users/' + userIdx + '/wses?page=0&size=' + defaultSize + '&sort=createdDate,desc';
             	commonJS.getRequestAtApi(apiUrl, setWsList);
-            	setScrollEvent();
+            	// setScrollEvent();
             }
             
             function setWsList(result) {
-            	if(result._embedded) {
-            		var wsPslList = result._embedded.wsPslDtoList;
+            	var retVal = JSON.parse(result);
+            	
+            	if(retVal._embedded) {
+            		var wsPslList = retVal._embedded.wsPslDtoList;
                     var rows = '';
                     
                     for(var i = 0; i < wsPslList.length; i++) {
@@ -71,27 +73,35 @@
                     
                     $('#tableBody').append(rows);
                     
-                    if(result._links.next) {
-                        nextUri = result._links.next.href;
+                    if(retVal._links.next) {
+                        nextUri = retVal._links.next.href;
                     } else {
                         nextUri = null;
                     }
             	}
             }
             
-            function setScrollEvent() {
+            function nextPage() {
+            	if(nextUri != null) {
+            		commonJS.getRequestAtApi(nextUri, setWsList);
+            	}
+            }
+            
+/*             function setScrollEvent() {
             	$(window).scroll(function() {
             		if(nextUri != null) {
             			var scrollT = $(this).scrollTop(); //스크롤바의 상단위치
                         var scrollH = $(this).height();
                         var contentH = $('#body').height();
-
-                        if(scrollT + scrollH + 5 >= contentH) { // 스크롤바가 아래 쪽에 위치할 때
+                        
+                        // alert('scrollT : ' + scrollT + '\n' + 'scrollH : ' + scrollH + '\n' + 'contentH : ' + contentH);
+                        
+                        if(scrollT + scrollH + 50 > contentH) { // 스크롤바가 아래 쪽에 위치할 때
                         	commonJS.getRequestAtApi(nextUri, setWsList);
                         }
             		}
             	});
-            }
+            } */
             
             function viewWsPsl(obj) {
             	var apiUrl = obj.getAttribute('data-href');

@@ -34,7 +34,9 @@ public class GWController {
 		
 		RestUtil restUtil = RestUtil.builder().url(apiUrl).get().tokenInfo(tokenInfo).build();
 		
-		return restUtil.exchange();
+		ResponseEntity<String> entity = restUtil.exchange();
+		
+		return new ResponseEntity<String>(entity.getBody(), entity.getStatusCode());
 	}
 	
 	@PostMapping
@@ -47,7 +49,9 @@ public class GWController {
 		
 		RestUtil restUtil = RestUtil.builder().url(apiUrl).post().tokenInfo(tokenInfo).bodyParam(bodyParam).build();
 
-		return restUtil.exchange();
+		ResponseEntity<String> entity = restUtil.exchange();
+		
+		return new ResponseEntity<String>(entity.getBody(), entity.getStatusCode());
 	}
 	
 }

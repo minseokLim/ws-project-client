@@ -42,7 +42,7 @@
         <script type="text/javascript" th:inline="javascript">
         /* <![CDATA[ */
             var apiUrl = /*[[ ${param.apiUrl} ]]*/;
-            var userIdx = /*[[ ${userIdx} ]]*/;
+            var userIdx = /*[[ ${param.userIdx} ]]*/;
             var originalContent = /*[[ ${param.content} ]]*/;
             var originalAuthor = /*[[ ${param.author} ]]*/;
             
@@ -60,7 +60,7 @@
             	}
             	
             	var data = {
-            		ownerIdx : userIdx,
+            		ownerIdx : userIdx[0],
            			content : content,
                     author : author,
                     type : 0 // 일단 default로 0(SELF_DEV)로 설정	
@@ -71,7 +71,7 @@
             
             function saveWsComplete() {
             	alert('저장되었습니다.');
-                window.location.href = '/ws-service/wsPslList';
+                location.href = '/ws-service/wsPslList';
             }
             
             function isValidated(content, author) {

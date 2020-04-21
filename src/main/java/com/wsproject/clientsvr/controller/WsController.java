@@ -24,9 +24,8 @@ public class WsController {
 	 * @return
 	 */
 	@GetMapping(value = {"/ws-service/main", "/"})
-	public String main(@CookieValue("userInfo") String userCookie, Model model) {
-		Long userIdx = CommonUtil.extractCookie(userCookie, UserInfo.class).getIdx();
-		String apiUrl = properties.getApiBaseUri() + "/ws-service/v1.0/users/" + userIdx + "/todaysWs";
+	public String main(Model model) {
+		String apiUrl = properties.getApiBaseUri() + "/ws-service/v1.0/users/{userIdx}/todaysWs";
 		model.addAttribute("apiUrl", apiUrl);
 		
 		return "ws-service/main";
@@ -35,7 +34,7 @@ public class WsController {
 	@GetMapping("/ws-service/saveWsPsl")
 	public String saveWsPsl(@CookieValue("userInfo") String userCookie, Model model) {
 		Long userIdx = CommonUtil.extractCookie(userCookie, UserInfo.class).getIdx();
-		String apiUrl = properties.getApiBaseUri() + "/ws-service/v1.0/users/" + userIdx + "/wses";
+		String apiUrl = properties.getApiBaseUri() + "/ws-service/v1.0/users/{userIdx}/wses";
 		model.addAttribute("apiUrl", apiUrl);
 		model.addAttribute("userIdx", userIdx);
 		
@@ -43,9 +42,8 @@ public class WsController {
 	}
 	
 	@GetMapping("/ws-service/wsPslList")
-	public String wsPslList(@CookieValue("userInfo") String userCookie, Model model) {
-		Long userIdx = CommonUtil.extractCookie(userCookie, UserInfo.class).getIdx();
-		String apiUrl = properties.getApiBaseUri() + "/ws-service/v1.0/users/" + userIdx + "/wses";
+	public String wsPslList(Model model) {
+		String apiUrl = properties.getApiBaseUri() + "/ws-service/v1.0/users/{userIdx}/wses";
 		model.addAttribute("apiUrl", apiUrl);
 		
 		return "ws-service/wsPslList";
@@ -57,10 +55,7 @@ public class WsController {
 	}
 	
 	@GetMapping("/ws-service/modifyWsPsl")
-	public String modifyWsPsl(@CookieValue("userInfo") String userCookie, Model model) {
-		Long userIdx = CommonUtil.extractCookie(userCookie, UserInfo.class).getIdx();
-		model.addAttribute("userIdx", userIdx);
-		
+	public String modifyWsPsl(Model model) {
 		return "ws-service/modifyWsPsl";
 	}
 }

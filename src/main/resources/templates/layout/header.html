@@ -43,6 +43,12 @@
                             내가 추가한 명언
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link link text-white display-4" href="javascript:void(0);" onclick="refreshTodaysWs();">
+                            <span class="mbri-refresh mbr-iconfont mbr-iconfont-btn"></span>
+                            오늘의 명언 새로고침
+                        </a>
+                    </li>
 	                <li class="nav-item">
 	                    <a class="nav-link link text-white display-4" href="javascript:void(0);" onclick="logout();">
 	                        <span class="mbri-logout mbr-iconfont mbr-iconfont-btn"></span>
@@ -62,6 +68,7 @@
 	    <script type="text/javascript" th:inline="javascript">
             /* <![CDATA[ */
             var authsvrBaseUri = /*[[ ${@environment.getProperty('custom.authsvr-base-uri')} ]]*/;
+            var apiBaseUri = /*[[ ${@environment.getProperty('custom.api-base-uri')} ]]*/;
             
             function logout() {
                 $.ajax({
@@ -75,6 +82,15 @@
                     	commonJS.post_to_url('/logout');
                     }
                 });
+            }
+            
+            function refreshTodaysWs() {
+            	var apiUrl = apiBaseUri + '/ws-service/v1.0/users/{userIdx}/todaysWs';
+            	commonJS.requestAtApi(apiUrl, refreshTodaysWsComplete, 'POST');
+            }
+            
+            function refreshTodaysWsComplete() {
+            	location.href = '/';
             }
             /* ]]> */
         </script>

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wsproject.clientsvr.dto.TokenInfo;
+import com.wsproject.clientsvr.dto.UserInfo;
 import com.wsproject.clientsvr.util.CommonUtil;
 import com.wsproject.clientsvr.util.RestUtil;
 
@@ -28,11 +29,12 @@ public class GWController {
 	private static final String DELETE = "DELETE";
 	
 	@RequestMapping("/api")
-	public ResponseEntity<String> requestAtApi(@CookieValue("tokenInfo") String tokenCookie, @RequestBody(required = false) Map<String, Object> bodyParam, 
-											   HttpServletRequest request) {
+	public ResponseEntity<String> requestAtApi(@CookieValue("userInfo") String userCookie, @CookieValue("tokenInfo") String tokenCookie, 
+											   @RequestBody(required = false) Map<String, Object> bodyParam, HttpServletRequest request) {
 		
 		TokenInfo tokenInfo = CommonUtil.extractCookie(tokenCookie, TokenInfo.class);
-		String apiUrl = request.getParameter(API_URL);
+		String userIdx = String.valueOf(CommonUtil.extractCookie(userCookie, UserInfo.class).getIdx());
+		String apiUrl = request.getParameter(API_URL).replace("{userIdx}", userIdx);
 		String method = request.getMethod();
 		
 		RestUtil.RestUtilBuilder restUtilBuilder = RestUtil.builder().url(apiUrl).tokenInfo(tokenInfo).bodyParam(bodyParam);

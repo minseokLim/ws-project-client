@@ -25,6 +25,7 @@ var commonJS = {
 			url: '/api?apiUrl=' + encodeURIComponent(apiUrl),
             type: method,
             data: JSON.stringify(data),
+            async: false,
             contentType : "application/json; charset=UTF-8",
             success: function(result) {
             	callbackFunc(result);

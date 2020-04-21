@@ -45,8 +45,7 @@
             var nextUri = null;
             
             window.onload = function() {
-            	commonJS.getRequestAtApi(apiUrl + '?page=0&size=' + defaultSize + '&sort=id,desc', setWsList);
-            	// setScrollEvent();
+            	commonJS.requestAtApi(apiUrl + '?page=0&size=' + defaultSize + '&sort=id,desc', setWsList);
             }
             
             function setWsList(result) {
@@ -87,25 +86,9 @@
             
             function nextPage() {
             	if(nextUri != null) {
-            		commonJS.getRequestAtApi(nextUri, setWsList);
+            		commonJS.requestAtApi(nextUri, setWsList);
             	}
             }
-            
-/*             function setScrollEvent() {
-            	$(window).scroll(function() {
-            		if(nextUri != null) {
-            			var scrollT = $(this).scrollTop(); //스크롤바의 상단위치
-                        var scrollH = $(this).height();
-                        var contentH = $('#body').height();
-                        
-                        // alert('scrollT : ' + scrollT + '\n' + 'scrollH : ' + scrollH + '\n' + 'contentH : ' + contentH);
-                        
-                        if(scrollT + scrollH + 50 > contentH) { // 스크롤바가 아래 쪽에 위치할 때
-                        	commonJS.getRequestAtApi(nextUri, setWsList);
-                        }
-            		}
-            	});
-            } */
             
             function viewWsPsl(obj) {
             	var apiUrl = obj.getAttribute('data-href');

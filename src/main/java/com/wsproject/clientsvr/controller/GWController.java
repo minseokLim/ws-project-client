@@ -6,9 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,50 +18,41 @@ import lombok.AllArgsConstructor;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api")
 public class GWController {
 	
 	private static final String API_URL = "apiUrl";
 	
-	@GetMapping
-	public ResponseEntity<String> getRequestAtApi(@CookieValue("tokenInfo") String tokenCookie, HttpServletRequest request) {
+	private static final String GET = "GET";
+	private static final String POST = "POST";
+	private static final String PUT = "PUT";
+	private static final String DELETE = "DELETE";
+	
+	@RequestMapping("/api")
+	public ResponseEntity<String> requestAtApi(@CookieValue("tokenInfo") String tokenCookie, @RequestBody(required = false) Map<String, Object> bodyParam, 
+											   HttpServletRequest request) {
 		
 		TokenInfo tokenInfo = CommonUtil.extractCookie(tokenCookie, TokenInfo.class);
-		
 		String apiUrl = request.getParameter(API_URL);
+		String method = request.getMethod();
 		
-		RestUtil restUtil = RestUtil.builder().url(apiUrl).get().tokenInfo(tokenInfo).build();
+		RestUtil.RestUtilBuilder restUtilBuilder = RestUtil.builder().url(apiUrl).tokenInfo(tokenInfo).bodyParam(bodyParam);
+		RestUtil restUtil = null;
 		
-		ResponseEntity<String> entity = restUtil.exchange();
+		switch (method) {
+		case GET:
+			restUtil = restUtilBuilder.get().build();
+			break;
+		case POST:
+			restUtil = restUtilBuilder.post().build();
+			break;
+		case PUT:
+			restUtil = restUtilBuilder.put().build();
+			break;
+		case DELETE:
+			restUtil = restUtilBuilder.delete().build();
+			break;
+		}
 		
-		return new ResponseEntity<String>(entity.getBody(), entity.getStatusCode());
-	}
-	
-	@PostMapping
-	public ResponseEntity<String> postRequestAtApi(@CookieValue("tokenInfo") String tokenCookie, @RequestBody Map<String, Object> bodyParam) {
-		
-		TokenInfo tokenInfo = CommonUtil.extractCookie(tokenCookie, TokenInfo.class);
-		
-		String apiUrl = (String) bodyParam.get(API_URL);
-		bodyParam.remove(API_URL);
-		
-		RestUtil restUtil = RestUtil.builder().url(apiUrl).post().tokenInfo(tokenInfo).bodyParam(bodyParam).build();
-
-		ResponseEntity<String> entity = restUtil.exchange();
-		
-		return new ResponseEntity<String>(entity.getBody(), entity.getStatusCode());
-	}
-	
-	@PutMapping
-	public ResponseEntity<String> putRequestAtApi(@CookieValue("tokenInfo") String tokenCookie, @RequestBody Map<String, Object> bodyParam) {
-		
-		TokenInfo tokenInfo = CommonUtil.extractCookie(tokenCookie, TokenInfo.class);
-		
-		String apiUrl = (String) bodyParam.get(API_URL);
-		bodyParam.remove(API_URL);
-		
-		RestUtil restUtil = RestUtil.builder().url(apiUrl).put().tokenInfo(tokenInfo).bodyParam(bodyParam).build();
-
 		ResponseEntity<String> entity = restUtil.exchange();
 		
 		return new ResponseEntity<String>(entity.getBody(), entity.getStatusCode());

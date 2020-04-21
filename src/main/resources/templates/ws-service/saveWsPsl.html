@@ -62,7 +62,7 @@
                     type : 0 // 일단 default로 0(SELF_DEV)로 설정	
             	};
             	
-            	commonJS.postRequestAtApi(apiUrl, saveWsComplete, data);
+            	commonJS.requestAtApi(apiUrl, saveWsComplete, 'POST', data);
             }
             
             function saveWsComplete() {

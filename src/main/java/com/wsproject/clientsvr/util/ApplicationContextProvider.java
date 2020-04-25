@@ -5,7 +5,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
-/** 일반 객체에서 Bean객체를 사용할 수 있게 하기위해 applicationContext를 제공
+/** 
+ * static 메서드에서도 Bean객체를 사용할 수 있게 하기위해 applicationContext를 제공
  * @author mslim
  * 
  */

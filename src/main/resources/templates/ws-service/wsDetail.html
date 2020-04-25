@@ -16,8 +16,8 @@
 		                <p id="author" style="text-align: right; font-weight: bold;"></p>
 		                
 		                <div class="mbr-section-btn">
-		                    <a class="btn btn-sm btn-primary display-4" href="javascript:void(0);" onclick="updateWsPsl();">수정</a>
-		                    <a class="btn btn-sm btn-secondary display-4" href="javascript:void(0);" onclick="deleteWsPsl();">삭제</a>
+		                    <a class="btn btn-sm btn-primary display-4" href="javascript:void(0);" onclick="updateWs();">수정</a>
+		                    <a class="btn btn-sm btn-secondary display-4" href="javascript:void(0);" onclick="deleteWs();">삭제</a>
 		                </div>
 		            </div>
 		        </div>
@@ -35,10 +35,10 @@
             var userIdx;
             
         	window.onload = function() {
-        		commonJS.requestAtApi(apiUrl[0], setWsPsl);
+        		commonJS.requestAtApi(apiUrl[0], setWs);
         	}
         	
-        	function setWsPsl(result) {
+        	function setWs(result) {
         		var retVal = JSON.parse(result);
         		
         		content = retVal.content;
@@ -49,20 +49,20 @@
         		$('#author').text('- ' + author);
         	}
         	
-        	function updateWsPsl() {
-        		location.href = '/ws-service/modifyWsPsl?apiUrl=' + encodeURIComponent(apiUrl) 
+        	function updateWs() {
+        		location.href = '/ws-service/editWs?apiUrl=' + encodeURIComponent(apiUrl) 
         				+ '&content=' + encodeURIComponent(content) + '&author=' + encodeURIComponent(author)
         				+ '&userIdx=' + encodeURIComponent(userIdx);
         	}
         	
-        	function deleteWsPsl() {
+        	function deleteWs() {
         		if(confirm('삭제하시겠습니까?')) {
-        			commonJS.requestAtApi(apiUrl[0], deleteWsPslComplete, 'DELETE');
+        			commonJS.requestAtApi(apiUrl[0], deleteWsComplete, 'DELETE');
         		}
         	}
         	
-        	function deleteWsPslComplete() {
-                location.href = '/ws-service/wsPslList';
+        	function deleteWsComplete() {
+                location.href = '/ws-service/wsList';
             }
         /* ]]> */
         </script>

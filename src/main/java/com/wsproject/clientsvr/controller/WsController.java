@@ -17,9 +17,8 @@ public class WsController {
 	
 	private CustomProperties properties;
 	
-	/** 오늘의 명언 메인화면
-	 * @param userCookie
-	 * @param tokenCookie
+	/** 
+	 * 오늘의 명언 메인화면
 	 * @param model
 	 * @return
 	 */
@@ -31,31 +30,51 @@ public class WsController {
 		return "ws-service/main";
 	}
 	
-	@GetMapping("/ws-service/saveWsPsl")
-	public String saveWsPsl(@CookieValue("userInfo") String userCookie, Model model) {
+	/**
+	 * 명언 추가 화면
+	 * @param userCookie
+	 * @param model
+	 * @return
+	 */
+	@GetMapping("/ws-service/addWs")
+	public String addWs(@CookieValue("userInfo") String userCookie, Model model) {
 		Long userIdx = CommonUtil.extractCookie(userCookie, UserInfo.class).getIdx();
 		String apiUrl = properties.getApiBaseUri() + "/ws-service/v1.0/users/{userIdx}/wses";
 		model.addAttribute("apiUrl", apiUrl);
 		model.addAttribute("userIdx", userIdx);
 		
-		return "ws-service/saveWsPsl";
+		return "ws-service/addWs";
 	}
 	
-	@GetMapping("/ws-service/wsPslList")
-	public String wsPslList(Model model) {
+	/**
+	 * 내가 추가한 명언 목록 화면
+	 * @param model
+	 * @return
+	 */
+	@GetMapping("/ws-service/wsList")
+	public String wsList(Model model) {
 		String apiUrl = properties.getApiBaseUri() + "/ws-service/v1.0/users/{userIdx}/wses";
 		model.addAttribute("apiUrl", apiUrl);
 		
-		return "ws-service/wsPslList";
+		return "ws-service/wsList";
 	}
 	
-	@GetMapping("/ws-service/viewWsPsl")
-	public String viewWsPsl() {
-		return "ws-service/viewWsPsl";
+	/**
+	 * 내가 추가한 명언 상세 보기 화면
+	 * @return
+	 */
+	@GetMapping("/ws-service/wsDetail")
+	public String wsDetail() {
+		return "ws-service/wsDetail";
 	}
 	
-	@GetMapping("/ws-service/modifyWsPsl")
-	public String modifyWsPsl(Model model) {
-		return "ws-service/modifyWsPsl";
+	/**
+	 * 내가 추가한 명언 수정하기 화면
+	 * @param model
+	 * @return
+	 */
+	@GetMapping("/ws-service/editWs")
+	public String editWs(Model model) {
+		return "ws-service/editWs";
 	}
 }

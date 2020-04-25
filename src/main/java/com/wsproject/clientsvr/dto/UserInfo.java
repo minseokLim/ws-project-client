@@ -6,9 +6,9 @@ import com.wsproject.clientsvr.domain.enums.SocialType;
 import lombok.Getter;
 
 /**
+ * 사용자의 기본적인 정보를 쿠키에 저장하기 위해 쓰이는 class
  * @author mslim
- * 사용자의 기본적인 정보를 담는 용도<br>
- * 쿠키에 저장
+ *
  */
 @Getter
 public class UserInfo {

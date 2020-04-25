@@ -5,6 +5,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientProperties;
+import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientProperties.Registration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -71,7 +72,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 	
 	private ClientRegistration getRegistration(OAuth2ClientProperties oAuth2ClientProperties, String client) {
-		OAuth2ClientProperties.Registration registration = oAuth2ClientProperties.getRegistration().get(client);
+		Registration registration = oAuth2ClientProperties.getRegistration().get(client);
 		
 		return oAuth2Provider.getBuilder(client)
 				.clientId(registration.getClientId())

@@ -11,7 +11,7 @@ import com.wsproject.clientsvr.config.CustomProperties;
 import lombok.AllArgsConstructor;
 
 /**
- * oauth2 인증 요청에 대한 기본정보를 가지고 있는 객체
+ * OAUTH2 인증 요청에 대한 기본정보를 가지고 있는 class
  * @author mslim
  *
  */

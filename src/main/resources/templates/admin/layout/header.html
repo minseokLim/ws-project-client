@@ -17,8 +17,8 @@
 	                    </a>
 	                </span> -->
 	                <span class="navbar-caption-wrap">
-	                    <a class="navbar-caption text-white display-4" href="/">
-	                        WS-Project
+	                    <a class="navbar-caption text-white display-4" href="/admin">
+	                        관리자모드
 	                    </a>
 	                </span>
 	            </div>
@@ -28,31 +28,19 @@
 	                <li class="nav-item">
                         <a class="nav-link link text-white display-4" href="/">
                             <span class="mbri-home mbr-iconfont mbr-iconfont-btn"></span>
-                            HOME
+                            HOME (사용자모드)
                         </a>
                     </li>
 	                <li class="nav-item">
-                        <a class="nav-link link text-white display-4" href="/ws-service/addWs">
+                        <a class="nav-link link text-white display-4" href="/admin/ws-service/addWs">
                             <span class="mbri-save mbr-iconfont mbr-iconfont-btn"></span>
-                            명언 추가
+                            명언 추가 (관리자)
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link link text-white display-4" href="/ws-service/wsList">
+                        <a class="nav-link link text-white display-4" href="/admin/ws-service/wsList">
                             <span class="mbri-pages mbr-iconfont mbr-iconfont-btn"></span>
-                            내가 추가한 명언
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link link text-white display-4" href="javascript:void(0);" onclick="refreshTodaysWs();">
-                            <span class="mbri-refresh mbr-iconfont mbr-iconfont-btn"></span>
-                            오늘의 명언 새로고침
-                        </a>
-                    </li>
-                    <li th:if="${isAdmin}" class="nav-item">
-                        <a class="nav-link link text-white display-4" href="/admin">
-                            <span class="mbri-idea mbr-iconfont mbr-iconfont-btn"></span>
-                            관리자모드
+                            명언 목록 (관리자)
                         </a>
                     </li>
 	                <li class="nav-item">
@@ -74,9 +62,6 @@
 	    <script type="text/javascript" th:inline="javascript">
             /* <![CDATA[ */
             var authsvrBaseUri = /*[[ ${@environment.getProperty('custom.authsvr-base-uri')} ]]*/;
-            var apiBaseUri = /*[[ ${@environment.getProperty('custom.api-base-uri')} ]]*/;
-            var isAdmin = /*[[ ${isAdmin} ]]*/;
-            var userIdx = /*[[ ${userInfo.idx} ]]*/;
             
             function logout() {
                 $.ajax({
@@ -90,15 +75,6 @@
                     	commonJS.post_to_url('/logout');
                     }
                 });
-            }
-            
-            function refreshTodaysWs() {
-            	var apiUrl = apiBaseUri + '/ws-service/v1.0/users/' + userIdx + '/todaysWs';
-            	commonJS.requestAtApi(apiUrl, refreshTodaysWsComplete, 'POST');
-            }
-            
-            function refreshTodaysWsComplete() {
-            	location.href = '/';
             }
             /* ]]> */
         </script>

@@ -1,8 +1,11 @@
 package com.wsproject.clientsvr.util;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.context.ApplicationContext;
@@ -10,6 +13,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.google.gson.Gson;
+import com.wsproject.clientsvr.util.provider.ApplicationContextProvider;
 
 public class CommonUtil {
 
@@ -48,9 +52,34 @@ public class CommonUtil {
 	 * @param classType
 	 * @return 쿠키로부터 추출된 객체
 	 */
-	public static <T> T extractCookie(String cookie, Class<T> classType) {
+	public static <T> T extractObjFromCookie(String cookie, Class<T> classType) {
 		Gson gson = getBean(Gson.class);
 		return gson.fromJson(AESUtil.decrypt(cookie), classType);
+	}
+	
+	/**
+	 * 쿠키 이름을 통해 request로부터 쿠키를 얻는다.
+	 * @param request
+	 * @param name
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
+	public static String getCookie(HttpServletRequest request, String name) throws UnsupportedEncodingException {
+		
+		String result = null;
+		
+		Cookie[] cookies = request.getCookies();
+		
+		if(cookies != null) {
+			for(Cookie cookie : cookies) {
+				if(cookie.getName().equals(name)) {
+					result = URLDecoder.decode(cookie.getValue(), "UTF-8");
+					break;
+				}
+			}
+		}
+		
+		return result;
 	}
 	
 	/** 

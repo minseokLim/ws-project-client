@@ -18,7 +18,7 @@ import org.springframework.security.web.authentication.LoginUrlAuthenticationEnt
 import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
-import com.wsproject.clientsvr.util.OAuth2Provider;
+import com.wsproject.clientsvr.util.provider.OAuth2Provider;
 
 import lombok.AllArgsConstructor;
 

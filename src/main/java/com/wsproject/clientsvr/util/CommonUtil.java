@@ -13,7 +13,8 @@ import com.google.gson.Gson;
 
 public class CommonUtil {
 
-	/** '/' 경로에 쿠키를 추가한다
+	/** 
+	 * '/' 경로에 쿠키를 암호화하여 추가한다
 	 * @param name
 	 * @param value
 	 */
@@ -21,7 +22,8 @@ public class CommonUtil {
 		addCookie(name, value, "/");
 	}
 	
-	/** path에 쿠키를 추가한다
+	/** 
+	 * path에 쿠키를 암호화하여 추가한다
 	 * @param name
 	 * @param value
 	 * @param path
@@ -39,7 +41,8 @@ public class CommonUtil {
 		}
 	}
 	
-	/** 암호화되어 저장되어있는 쿠키값을 객체로 변환하여 추출한다.
+	/** 
+	 * 암호화되어 저장되어있는 쿠키값을 객체로 변환하여 추출한다.
 	 * @param <T>
 	 * @param cookie
 	 * @param classType
@@ -50,7 +53,8 @@ public class CommonUtil {
 		return gson.fromJson(AESUtil.decrypt(cookie), classType);
 	}
 	
-	/** Bean객체를 얻는다
+	/** 
+	 * Bean객체를 얻는다
 	 * @param <T>
 	 * @param classType
 	 * @return Bean 객체

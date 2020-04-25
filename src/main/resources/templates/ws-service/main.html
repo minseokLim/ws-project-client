@@ -30,10 +30,10 @@
             var author;
             
             window.onload = function() {
-                commonJS.requestAtApi(apiUrl, setWsPsl);
+                commonJS.requestAtApi(apiUrl, setTodaysWs);
             }
             
-            function setWsPsl(result) {
+            function setTodaysWs(result) {
                 var retVal = JSON.parse(result);
                 
                 content = retVal.content;

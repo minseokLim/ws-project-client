@@ -4,8 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
+ * 토큰 정보를 담는 class
  * @author mslim
- * 토큰 정보
+ *
  */
 @Getter
 @Setter

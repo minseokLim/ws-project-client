@@ -17,7 +17,8 @@ import com.wsproject.clientsvr.dto.TokenInfo;
 
 import lombok.extern.slf4j.Slf4j;
 
-/** Rest 요청에 대한 중복코드를 최소화 하기위해 생성한 유틸
+/** 
+ * RestTemplate을 이용한 요청에 대한 중복코드를 최소화 하기위해 생성한 유틸
  * @author mslim
  *
  */
@@ -31,6 +32,9 @@ public class RestUtil {
 	private Map<String, String[]> queryParams;
 	private Object bodyParam;
 	
+	// 토큰 정보를 Header에 주입할 때 토큰 앞에 붙일 값
+	private static final String BEARER_PREFIX = "Bearer ";
+	
 	public RestUtil(String url, HttpMethod method, HttpHeaders headers, TokenInfo tokenInfo, 
 					Map<String, String[]> queryParams, Object bodyParam) {
 		this.url = url;
@@ -41,16 +45,19 @@ public class RestUtil {
 		this.bodyParam = bodyParam;
 	}
 	
-	/** 객체에 있는 정보를 기반으로 Rest요청을 한다.
+	/** 
+	 * RestTemplate과 객체에 있는 정보를 기반으로 http 요청을 한다.
 	 * @return 리스판스
 	 */
 	public ResponseEntity<String> exchange() {
-		log.info("exchange started - url : {}", url);
+		log.debug("exchange started - url : {}", url);
 		
 		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url);
 		queryParams.entrySet().forEach(entry -> builder.queryParam(entry.getKey(), Arrays.asList(entry.getValue())));
 		
-		headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + tokenInfo.getAccess_token());
+		if(tokenInfo != null) {
+			headers.add(HttpHeaders.AUTHORIZATION, BEARER_PREFIX + tokenInfo.getAccess_token()); // 토큰 정보를 헤더에 주입
+		}
 		
 		HttpEntity<Object> entity = new HttpEntity<Object>(bodyParam, headers);
 		
@@ -65,13 +72,13 @@ public class RestUtil {
 			TokenUtil tokenUtil = CommonUtil.getBean(TokenUtil.class);
 			
 			TokenInfo refreshed = tokenUtil.refreshTokenInfo(tokenInfo.getRefresh_token());
-			headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + refreshed.getAccess_token());
+			headers.add(HttpHeaders.AUTHORIZATION, BEARER_PREFIX + refreshed.getAccess_token());
 			entity = new HttpEntity<Object>(bodyParam, headers);
 			
 			result = restTemplate.exchange(builder.toUriString(), method, entity, String.class);
 		}
 		
-		log.info("exchange ended - url : {}", url);
+		log.debug("exchange ended - url : {}", url);
 		return result;
 	}
 	
@@ -82,14 +89,14 @@ public class RestUtil {
 	public static class RestUtilBuilder {
 		
 		private String url;
-		private HttpMethod method;
+		private HttpMethod method = HttpMethod.GET;
 		private HttpHeaders headers = new HttpHeaders();
 		private TokenInfo tokenInfo;
 		private Map<String, String[]> queryParams = new HashMap<>();
 		private Object bodyParam;
 		
 		public RestUtilBuilder() {
-			// 디폴트 Content-Type=application/json
+			// Default Content-Type=application/json
 			headers.setContentType(MediaType.APPLICATION_JSON);
 		}
 
@@ -98,15 +105,18 @@ public class RestUtil {
 			return this;
 		}
 		
-		/** HttpMethod를 GET으로 설정
+		/** 
+		 * HttpMethod를 GET으로 설정
 		 * @return
 		 */
+		@Deprecated
 		public RestUtilBuilder get() {
 			method = HttpMethod.GET;
 			return this;
 		}
 		
-		/** HttpMethod를 POST로 설정
+		/** 
+		 * HttpMethod를 POST로 설정
 		 * @return
 		 */
 		public RestUtilBuilder post() {
@@ -114,7 +124,8 @@ public class RestUtil {
 			return this;
 		}
 		
-		/** HttpMethod를 PUT으로 설정
+		/** 
+		 * HttpMethod를 PUT으로 설정
 		 * @return
 		 */
 		public RestUtilBuilder put() {
@@ -122,7 +133,8 @@ public class RestUtil {
 			return this;
 		}
 		
-		/** HttpMethod를 DELETE로 설정
+		/** 
+		 * HttpMethod를 DELETE로 설정
 		 * @return
 		 */
 		public RestUtilBuilder delete() {
@@ -130,7 +142,8 @@ public class RestUtil {
 			return this;
 		}
 		
-		/** header에 key, value형태로 값을 추가
+		/** 
+		 * header에 key, value형태로 값을 추가
 		 * @param headerName
 		 * @param headerValue
 		 * @return
@@ -140,7 +153,8 @@ public class RestUtil {
 			return this;
 		}
 		
-		/** header에 contentType을 설정
+		/** 
+		 * header에 contentType을 설정
 		 * @param mediaType
 		 * @return
 		 */
@@ -149,7 +163,8 @@ public class RestUtil {
 			return this;
 		}
 		
-		/** 요청에 쓰일 토큰정보 설정
+		/** 
+		 * 요청에 쓰일 토큰정보 설정
 		 * @param tokenInfo
 		 * @return
 		 */
@@ -158,7 +173,8 @@ public class RestUtil {
 			return this;
 		}
 		
-		/** 쿼리파라미터를 key, value형태로 추가
+		/** 
+		 * 쿼리파라미터를 key, value형태로 추가
 		 * @param key
 		 * @param values
 		 * @return
@@ -168,11 +184,11 @@ public class RestUtil {
 			return this;
 		}
 		
-		public RestUtilBuilder queryParams(Map<String, String[]> queryParams) {
-			this.queryParams = queryParams;
-			return this;
-		}
-		
+		/**
+		 * POST/PUT 전송 시 body로 보낼 파라미터를 지정
+		 * @param bodyParam
+		 * @return
+		 */
 		public RestUtilBuilder bodyParam(Object bodyParam) {
 			this.bodyParam = bodyParam;
 			return this;

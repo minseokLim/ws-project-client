@@ -31,15 +31,19 @@ public class LoginController {
 	
 	private CustomProperties properties;
 	
-	/** 로그인 화면
+	/** 
+	 * 로그인 페이지로 이동
 	 * @return
 	 */
 	@GetMapping("/login")
-	public String login(HttpServletRequest request) {
+	public String login() {
 		return "redirect:/oauth2/authorization/ws-project";
 	}
 	
-	/** 인증서버의 인증을 거친후 리다이렉트되는 url
+	/** 
+	 * 인증서버의 인증을 거친후 리다이렉트되는 url <br>
+	 * 인증서버로부터 받은 code 값을 바탕으로 인증서버에 토큰을 요청하고, 토큰을 바탕으로 사용자정보를 API server에 요청한다. <br>
+	 * 이 때, 토큰과 사용자 정보는 암호화되어 쿠키에 저장된다.
 	 * @param code
 	 * @param request
 	 * @param response
@@ -49,13 +53,17 @@ public class LoginController {
 	public String actionLogin(@RequestParam("code") String code, HttpServletRequest request, HttpServletResponse response) {
 		String redirectUri = request.getRequestURL().toString();
 		
+		// 토큰 요청
 		TokenInfo tokenInfo = tokenUtil.getTokenInfo(code, redirectUri);
-		RestUtil restUtil = RestUtil.builder().url(properties.getApiBaseUri() + "/user-service/v1.0/users/me").get().tokenInfo(tokenInfo).build();
+		
+		// 토큰을 기반으로 사용자 정보 요청
+		RestUtil restUtil = RestUtil.builder().url(properties.getApiBaseUri() + "/user-service/v1.0/users/me").tokenInfo(tokenInfo).build();
 		ResponseEntity<String> result = restUtil.exchange();
 		
 		User user = gson.fromJson(result.getBody(), User.class);
 		
 		SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(user.getIdx(), "N/A", user.getAuthorities()));
+		// 사용자 정보를 암호화하여 쿠키에 저장
 		CommonUtil.addCookie("userInfo", gson.toJson(new UserInfo(user)));
 
 		return "redirect:/";

@@ -52,17 +52,17 @@
             	var retVal = JSON.parse(result);
             	
             	if(retVal._embedded) {
-            		var wsPslList = retVal._embedded.wsPslDtoList;
+            		var wsList = retVal._embedded.wsPslDtoList;
                     var rows = '';
                     
-                    for(var i = 0; i < wsPslList.length; i++) {
-                    	var content = wsPslList[i].content;
-                    	var author = wsPslList[i].author;
+                    for(var i = 0; i < wsList.length; i++) {
+                    	var content = wsList[i].content;
+                    	var author = wsList[i].author;
                     	
                     	if(content.length > 11) content = content.substring(0, 10) + '...';
                     	if(author.length > 7) author = author.substring(0, 6) + '...';
                     	
-                        rows += '<tr data-href="' + wsPslList[i]._links.self.href + '" onclick="viewWsPsl(this);">' +
+                        rows += '<tr data-href="' + wsList[i]._links.self.href + '" onclick="wsDetail(this);">' +
                                     '<td>' + content + '</td>' +
                                     '<td>' + author + '</td>' +
                                 '</tr>';
@@ -90,9 +90,9 @@
             	}
             }
             
-            function viewWsPsl(obj) {
+            function wsDetail(obj) {
             	var apiUrl = obj.getAttribute('data-href');
-            	location.href = "/ws-service/viewWsPsl?apiUrl=" + encodeURIComponent(apiUrl);
+            	location.href = "/ws-service/wsDetail?apiUrl=" + encodeURIComponent(apiUrl);
             }
         /* ]]> */
         </script>

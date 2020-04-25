@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:replace="layout/mainHead::mainHead"></head>
+    <body>
+        <section th:replace="admin/layout/header::header"></section>
+		
+        <section class="mbr-fullscreen" id="header2-1">
+		    <div class="container align-center">
+		        <div class="row justify-content-md-center">
+		            <div class="mbr-black col-md-10 mainDiv">
+		                <h1 class="mbr-section-title mbr-bold pb-3 mbr-fonts-style display-2" style="margin-top: 1rem;">
+		                    오늘의 명언 (관리자)
+		                </h1>
+		                
+		                <p id="content" style="text-align: left; font-weight: bold;" class="mbr-text pb-3 mbr-fonts-style display-5"></p>
+		                <p id="author" style="text-align: right; font-weight: bold;"></p>
+		                
+		            </div>
+		        </div>
+		    </div>
+		</section>
+
+        <section th:replace="layout/footer::footer"></section>
+        <section th:replace="layout/jsImport::jsImport"></section>
+        
+        <script type="text/javascript" th:inline="javascript">
+        /* <![CDATA[ */
+            var apiUrl = /*[[ ${apiUrl} ]]*/;
+            var content;
+            var author;
+            
+            window.onload = function() {
+                commonJS.requestAtApi(apiUrl, setTodaysWs);
+            }
+            
+            function setTodaysWs(result) {
+                var retVal = JSON.parse(result);
+                
+                content = retVal.content;
+                author = retVal.author;
+                
+                $('#content').text(content);
+                $('#author').text('- ' + author);
+            }
+        /* ]]> */
+        </script>
+    </body>
+</html>

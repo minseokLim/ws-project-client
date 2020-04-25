@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:replace="layout/mainHead::mainHead"></head>
+    <body>
+        <section th:replace="admin/layout/header::header"></section>
+		
+        <section class="mbr-fullscreen" id="header2-1">
+		    <div class="container align-center">
+		        <div class="row justify-content-md-center">
+		            <div class="mbr-black col-md-10 mainDiv">
+		                <h1 class="mbr-section-title mbr-bold pb-3 mbr-fonts-style display-2" style="margin-top: 1rem;">
+		                    명언 상세 (관리자)
+		                </h1>
+		                
+		                <p id="content" style="text-align: left; font-weight: bold;" class="mbr-text pb-3 mbr-fonts-style display-5"></p>
+		                <p id="author" style="text-align: right; font-weight: bold;"></p>
+		                
+		                <div class="mbr-section-btn">
+		                    <a class="btn btn-sm btn-primary display-4" href="javascript:void(0);" onclick="updateWs();">수정</a>
+		                    <a class="btn btn-sm btn-secondary display-4" href="javascript:void(0);" onclick="deleteWs();">삭제</a>
+		                </div>
+		            </div>
+		        </div>
+		    </div>
+		</section>
+
+        <section th:replace="layout/footer::footer"></section>
+        <section th:replace="layout/jsImport::jsImport"></section>
+        
+        <script type="text/javascript" th:inline="javascript">
+        /* <![CDATA[ */
+        	var apiUrl = /*[[ ${param.apiUrl} ]]*/;
+            var content;
+            var author;
+            
+        	window.onload = function() {
+        		commonJS.requestAtApi(apiUrl[0], setWs);
+        	}
+        	
+        	function setWs(result) {
+        		var retVal = JSON.parse(result);
+        		
+        		content = retVal.content;
+        		author = retVal.author;
+        			
+        		$('#content').text(content);
+        		$('#author').text('- ' + author);
+        	}
+        	
+        	function updateWs() {
+        		location.href = '/admin/ws-service/editWs?apiUrl=' + encodeURIComponent(apiUrl) 
+        				+ '&content=' + encodeURIComponent(content) + '&author=' + encodeURIComponent(author);
+        	}
+        	
+        	function deleteWs() {
+        		if(confirm('삭제하시겠습니까?')) {
+        			commonJS.requestAtApi(apiUrl[0], deleteWsComplete, 'DELETE');
+        		}
+        	}
+        	
+        	function deleteWsComplete() {
+                location.href = '/admin/ws-service/wsList';
+            }
+        /* ]]> */
+        </script>
+    </body>
+</html>

@@ -2,14 +2,14 @@
 <html xmlns:th="http://www.thymeleaf.org">
     <head th:replace="layout/mainHead::mainHead"></head>
     <body>
-        <section th:replace="layout/header::header"></section>
+        <section th:replace="admin/layout/header::header"></section>
         
         <section class="mbr-fullscreen" id="header2-1">
             <div class="container align-center">
                 <div class="row justify-content-md-center" >
                     <div class="mbr-black col-md-10 mainDiv" style="padding: 2em;">
                         <h1 class="mbr-section-title mbr-bold pb-3 mbr-fonts-style display-2">
-                            명언 추가
+                            명언 수정 (관리자)
                         </h1>
                         
                         <table style="margin: 1em auto;">
@@ -26,9 +26,6 @@
                                 </td>
                             </tr>
                         </table>
-                        <div style="text-align: left; font-size: 0.9em; font-weight: bold;">
-                                ※ 추가되는 명언은 향후 랜덤으로 선택되는 오늘의 명언 중 하나에 포함됩니다.
-                        </div>
                         <div class="mbr-section-btn">
                             <a class="btn btn-sm btn-primary display-4" href="javascript:void(0);" onclick="saveWs();" style="margin-top: 1.5em;">
                                 저장
@@ -44,8 +41,14 @@
         
         <script type="text/javascript" th:inline="javascript">
         /* <![CDATA[ */
-            var apiUrl = /*[[ ${apiUrl} ]]*/;
-            var userIdx = /*[[ ${userInfo.idx} ]]*/;
+            var apiUrl = /*[[ ${param.apiUrl} ]]*/;
+            var originalContent = /*[[ ${param.content} ]]*/;
+            var originalAuthor = /*[[ ${param.author} ]]*/;
+            
+            window.onload = function() {
+            	document.getElementById('content').value = originalContent;
+            	document.getElementById('author').value = originalAuthor;
+            }
             
             function saveWs() {
             	var content = document.getElementById('content').value.trim();
@@ -56,18 +59,17 @@
             	}
             	
             	var data = {
-            		ownerIdx : userIdx,
            			content : content,
                     author : author,
                     type : 0 // 일단 default로 0(SELF_DEV)로 설정	
             	};
             	
-            	commonJS.requestAtApi(apiUrl, saveWsComplete, 'POST', data);
+            	commonJS.requestAtApi(apiUrl[0], saveWsComplete, 'PUT', data);
             }
             
             function saveWsComplete() {
             	alert('저장되었습니다.');
-            	location.href = '/ws-service/wsList';
+                location.href = '/admin/ws-service/wsList';
             }
             
             function isValidated(content, author) {

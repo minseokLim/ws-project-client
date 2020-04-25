@@ -1,4 +1,4 @@
-package com.wsproject.clientsvr.util;
+package com.wsproject.clientsvr.util.provider;
 
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistration.Builder;

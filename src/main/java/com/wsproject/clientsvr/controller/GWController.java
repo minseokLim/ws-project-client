@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wsproject.clientsvr.dto.TokenInfo;
-import com.wsproject.clientsvr.dto.UserInfo;
 import com.wsproject.clientsvr.util.CommonUtil;
 import com.wsproject.clientsvr.util.RestUtil;
 import com.wsproject.clientsvr.util.RestUtil.RestUtilBuilder;
@@ -40,7 +39,7 @@ public class GWController {
 	 * 쿠키에 저장되어있는 token정보와 사용자정보를 이용해서 API server로 적절한 요청을 해준다.
 	 * <br>
 	 * <pre>
-	 * var apiUrl = 'https://api.mslim8803.shop/api/ws-service/wses/{userIdx}';
+	 * var apiUrl = 'https://api.mslim8803.shop/api/ws-service/wses';
 	 * var data = {
 	 * 	userIdx : 1,
 	 * 	content : 'test',
@@ -56,19 +55,17 @@ public class GWController {
 	 * 	}
 	 * });
 	 * </pre>
-	 * @param userCookie
 	 * @param tokenCookie
 	 * @param bodyParam
 	 * @param request
 	 * @return API server로부터 반환된 리스판스
 	 */
 	@RequestMapping("/api")
-	public ResponseEntity<String> requestAtApi(@CookieValue("userInfo") String userCookie, @CookieValue("tokenInfo") String tokenCookie, 
+	public ResponseEntity<String> requestAtApi(@CookieValue("tokenInfo") String tokenCookie, 
 											   @RequestBody(required = false) Map<String, Object> bodyParam, HttpServletRequest request) {
 		
-		TokenInfo tokenInfo = CommonUtil.extractCookie(tokenCookie, TokenInfo.class);
-		String userIdx = String.valueOf(CommonUtil.extractCookie(userCookie, UserInfo.class).getIdx());
-		String apiUrl = request.getParameter(API_URL).replace("{userIdx}", userIdx);
+		TokenInfo tokenInfo = CommonUtil.extractObjFromCookie(tokenCookie, TokenInfo.class);
+		String apiUrl = request.getParameter(API_URL);
 		String method = request.getMethod();
 		
 		RestUtilBuilder restUtilBuilder = RestUtil.builder().url(apiUrl).tokenInfo(tokenInfo).bodyParam(bodyParam);

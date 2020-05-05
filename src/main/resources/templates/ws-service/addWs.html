@@ -59,7 +59,7 @@
             		ownerIdx : userIdx,
            			content : content,
                     author : author,
-                    type : 0 // 일단 default로 0(SELF_DEV)로 설정	
+                    type : 'SELF_DEV' // 일단 default로 SELF_DEV로 설정
             	};
             	
             	commonJS.requestAtApi(apiUrl, saveWsComplete, 'POST', data);

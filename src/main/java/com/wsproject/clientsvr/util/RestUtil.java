@@ -45,11 +45,22 @@ public class RestUtil {
 		this.bodyParam = bodyParam;
 	}
 	
-	/** 
-	 * RestTemplate과 객체에 있는 정보를 기반으로 http 요청을 한다.
+	/**
+	 * RestTemplate과 객체에 있는 정보를 기반으로 http 요청을 한다. <br>
+	 * ResponseEntity에 담길 body의 class가 지정이 안 될 경우 String
 	 * @return 리스판스
 	 */
 	public ResponseEntity<String> exchange() {
+		return exchange(String.class);
+	}
+	
+	/**
+	 * RestTemplate과 객체에 있는 정보를 기반으로 http 요청을 한다.
+	 * @param <T>
+	 * @param clazz ResponseEntity에 담길 body의 class
+	 * @return 리스판스
+	 */
+	public <T> ResponseEntity<T> exchange(Class<T> clazz) {
 		log.debug("exchange started - url : {}", url);
 		
 		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url);
@@ -63,10 +74,10 @@ public class RestUtil {
 		
 		RestTemplate restTemplate = CommonUtil.getBean(RestTemplate.class);
 		
-		ResponseEntity<String> result;
+		ResponseEntity<T> result;
 		
 		try {
-			result = restTemplate.exchange(builder.toUriString(), method, entity, String.class);
+			result = restTemplate.exchange(builder.toUriString(), method, entity, clazz);
 		// 토큰이 만료됐을 경우 리프레시 토큰을 통해 재발급받는다
 		} catch (HttpClientErrorException.Unauthorized e) {
 			TokenUtil tokenUtil = CommonUtil.getBean(TokenUtil.class);
@@ -75,7 +86,7 @@ public class RestUtil {
 			headers.add(HttpHeaders.AUTHORIZATION, BEARER_PREFIX + refreshed.getAccess_token());
 			entity = new HttpEntity<Object>(bodyParam, headers);
 			
-			result = restTemplate.exchange(builder.toUriString(), method, entity, String.class);
+			result = restTemplate.exchange(builder.toUriString(), method, entity, clazz);
 		}
 		
 		log.debug("exchange ended - url : {}", url);

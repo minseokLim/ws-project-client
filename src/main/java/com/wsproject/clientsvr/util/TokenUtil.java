@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2Clien
 import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientProperties.Registration;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -65,9 +64,7 @@ public class TokenUtil {
 		bodyParams.add("grant_type", "authorization_code");
 		bodyParams.add("redirect_uri", redirectUri);
 		
-		ResponseEntity<String> responseEntity = restUtilBuilder.bodyParam(bodyParams).build().exchange();
-		
-		TokenInfo tokenInfo = gson.fromJson(responseEntity.getBody(), TokenInfo.class);
+		TokenInfo tokenInfo = restUtilBuilder.bodyParam(bodyParams).build().exchange(TokenInfo.class).getBody();
 		
 		// 토큰 정보를 암호화하여 쿠키에 저장
 		CommonUtil.addCookie("tokenInfo", gson.toJson(tokenInfo));
@@ -88,9 +85,7 @@ public class TokenUtil {
 		bodyParams.add("grant_type", "refresh_token");
 		bodyParams.add("refresh_token", refreshToken);
 		
-		ResponseEntity<String> responseEntity = restUtilBuilder.bodyParam(bodyParams).build().exchange();
-		
-		TokenInfo tokenInfo = gson.fromJson(responseEntity.getBody(), TokenInfo.class);
+		TokenInfo tokenInfo = restUtilBuilder.bodyParam(bodyParams).build().exchange(TokenInfo.class).getBody();
 		
 		// 토큰 정보를 암호화하여 쿠키에 저장
 		CommonUtil.addCookie("tokenInfo", gson.toJson(tokenInfo));

@@ -3,7 +3,6 @@ package com.wsproject.clientsvr.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -58,9 +57,7 @@ public class LoginController {
 		
 		// 토큰을 기반으로 사용자 정보 요청
 		RestUtil restUtil = RestUtil.builder().url(properties.getApiBaseUri() + "/user-service/v1.0/users/me").tokenInfo(tokenInfo).build();
-		ResponseEntity<String> result = restUtil.exchange();
-		
-		User user = gson.fromJson(result.getBody(), User.class);
+		User user = restUtil.exchange(User.class).getBody();
 		
 		SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(user.getIdx(), "N/A", user.getAuthorities()));
 		// 사용자 정보를 암호화하여 쿠키에 저장

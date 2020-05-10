@@ -8,13 +8,21 @@
 		    <div class="container align-center">
 		        <div class="row justify-content-md-center">
 		            <div class="mbr-black col-md-10 mainDiv">
-		                <h1 class="mbr-section-title mbr-bold pb-3 mbr-fonts-style display-2" style="margin-top: 1rem;">
-		                    오늘의 명언
-		                </h1>
-		                
+		            	<table style="width: 100%;">
+		            		<tr>
+		            			<td width="25%"></td>
+		            			<td width="50%">
+		            				<h1 class="mbr-section-title mbr-bold pb-3 mbr-fonts-style display-2" style="margin-top: 1rem;">
+					                    오늘의 명언
+					                </h1>
+		            			</td>
+		            			<td width="25%">
+		            				<img id="liked" onclick="setLiked(this);" style="width: 40%; padding-bottom: 0.8em; float: right; cursor: pointer;" alt="좋아요" src="/assets/images/heart.png">
+		            			</td>
+		            		</tr>
+		            	</table>
 		                <p id="content" style="text-align: left; font-weight: bold;" class="mbr-text pb-3 mbr-fonts-style display-5"></p>
 		                <p id="author" style="text-align: right; font-weight: bold;"></p>
-		                
 		            </div>
 		        </div>
 		    </div>
@@ -28,6 +36,9 @@
             var apiUrl = /*[[ ${apiUrl} ]]*/;
             var content;
             var author;
+            var wsId;
+            var psl;
+            var liked;
             
             window.onload = function() {
                 commonJS.requestAtApi(apiUrl, setTodaysWs);
@@ -38,9 +49,45 @@
                 
                 content = retVal.content;
                 author = retVal.author;
+                wsId = retVal.wsId;
+                psl = retVal.psl;
+                liked = retVal.liked;
                 
                 $('#content').text(content);
                 $('#author').text('- ' + author);
+                
+                if(liked) {
+                	document.getElementById('liked').src = "/assets/images/red_heart.png";
+                } else {
+                	document.getElementById('liked').src = "/assets/images/heart.png";
+                }
+            }
+            
+            function setLiked(obj) {
+            	var url = apiBaseUri + '/ws-service/v1.0/users/' + userIdx + '/wses/like';
+            	
+            	var data = {
+           			wsId : wsId,
+           			psl : psl,
+           			userIdx : userIdx
+            	}
+            	
+            	// 이미 좋아요를 누른 상태이면 해제, 아니면 좋아요 표시
+            	if(liked) {
+            		commonJS.requestAtApi(url, setLikedComplete, 'DELETE', data);
+            	} else {
+            		commonJS.requestAtApi(url, setLikedComplete, 'POST', data);
+            	}
+            }
+            
+            function setLikedComplete(result) {
+            	if(result) {
+            		document.getElementById('liked').src = "/assets/images/red_heart.png";
+            		liked = true;
+            	} else {
+            		document.getElementById('liked').src = "/assets/images/heart.png";
+            		liked = false;
+            	}
             }
         /* ]]> */
         </script>

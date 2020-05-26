@@ -52,7 +52,7 @@
             	var retVal = JSON.parse(result);
             	
             	if(retVal._embedded) {
-            		var wsList = retVal._embedded.wsDtoList;
+            		var wsList = retVal._embedded.wsAdminResponseDtoList;
                     var rows = '';
                     
                     for(var i = 0; i < wsList.length; i++) {

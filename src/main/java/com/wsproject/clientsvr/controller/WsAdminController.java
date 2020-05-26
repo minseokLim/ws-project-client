@@ -41,7 +41,7 @@ public class WsAdminController {
 	 */
 	@GetMapping("/ws-service/addWs")
 	public String addWs(Model model) {
-		String apiUrl = properties.getApiBaseUri() + "/ws-service/v1.0/wses";
+		String apiUrl = properties.getApiBaseUri() + "/ws-service/v1.0/admin/wses";
 		model.addAttribute("apiUrl", apiUrl);
 		
 		return "admin/ws-service/addWs";
@@ -54,7 +54,7 @@ public class WsAdminController {
 	 */
 	@GetMapping("/ws-service/wsList")
 	public String wsList(Model model) {
-		String apiUrl = properties.getApiBaseUri() + "/ws-service/v1.0/wses";
+		String apiUrl = properties.getApiBaseUri() + "/ws-service/v1.0/admin/wses";
 		model.addAttribute("apiUrl", apiUrl);
 		
 		return "admin/ws-service/wsList";

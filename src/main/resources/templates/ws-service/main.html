@@ -37,7 +37,7 @@
             var content;
             var author;
             var wsId;
-            var psl;
+            var privateFlag;
             var liked;
             
             window.onload = function() {
@@ -50,44 +50,34 @@
                 content = retVal.content;
                 author = retVal.author;
                 wsId = retVal.wsId;
-                psl = retVal.psl;
-                liked = retVal.liked;
+                privateFlag = retVal.privateFlag;
                 
                 $('#content').text(content);
                 $('#author').text('- ' + author);
                 
-                if(liked) {
-                	document.getElementById('liked').src = "/assets/images/red_heart.png";
-                } else {
-                	document.getElementById('liked').src = "/assets/images/heart.png";
-                }
+                setLikedComplete(retVal.liked);
             }
             
             function setLiked(obj) {
-            	var url = apiBaseUri + '/ws-service/v1.0/users/' + userIdx + '/wses/like';
-            	
-            	var data = {
-           			wsId : wsId,
-           			psl : psl,
-           			userIdx : userIdx
-            	}
+            	var url = apiBaseUri + '/ws-service/v1.0/users/' + userIdx + '/wses/' + wsId + '/like' 
+            			+ '?privateFlag=' + privateFlag;
             	
             	// 이미 좋아요를 누른 상태이면 해제, 아니면 좋아요 표시
             	if(liked) {
-            		commonJS.requestAtApi(url, setLikedComplete, 'DELETE', data);
+            		commonJS.requestAtApi(url, setLikedComplete, 'DELETE');
             	} else {
-            		commonJS.requestAtApi(url, setLikedComplete, 'POST', data);
+            		commonJS.requestAtApi(url, setLikedComplete, 'POST');
             	}
             }
             
             function setLikedComplete(result) {
             	if(result) {
             		document.getElementById('liked').src = "/assets/images/red_heart.png";
-            		liked = true;
             	} else {
             		document.getElementById('liked').src = "/assets/images/heart.png";
-            		liked = false;
             	}
+            	
+            	liked = result;
             }
         /* ]]> */
         </script>

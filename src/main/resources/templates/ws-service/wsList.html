@@ -52,7 +52,7 @@
             	var retVal = JSON.parse(result);
             	
             	if(retVal._embedded) {
-            		var wsList = retVal._embedded.wsPslDtoList;
+            		var wsList = retVal._embedded.wsPrivateResponseDtoList;
                     var rows = '';
                     
                     for(var i = 0; i < wsList.length; i++) {

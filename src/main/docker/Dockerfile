@@ -1,4 +1,4 @@
-FROM    openjdk:8-jdk-alpine
+FROM    openjdk:8-jre-alpine
 RUN     apk update && apk upgrade && apk add netcat-openbsd && apk add tzdata
 RUN     ln -snf /usr/share/zoneinfo/Asia/Seoul /etc/localtime
 RUN     mkdir -p /usr/local/clientsvr

@@ -1,7 +1,10 @@
 package com.wsproject.clientsvr.util;
 
-import java.util.Arrays;
-import java.util.HashMap;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.HttpEntity;
@@ -29,14 +32,14 @@ public class RestUtil {
 	private HttpMethod method;
 	private HttpHeaders headers;
 	private TokenInfo tokenInfo;
-	private Map<String, String[]> queryParams;
+	private Map<String, List<String>> queryParams;
 	private Object bodyParam;
 	
 	// 토큰 정보를 Header에 주입할 때 토큰 앞에 붙일 값
 	private static final String BEARER_PREFIX = "Bearer ";
 	
 	public RestUtil(String url, HttpMethod method, HttpHeaders headers, TokenInfo tokenInfo, 
-					Map<String, String[]> queryParams, Object bodyParam) {
+					Map<String, List<String>> queryParams, Object bodyParam) {
 		this.url = url;
 		this.method = method;
 		this.headers = headers;
@@ -64,7 +67,7 @@ public class RestUtil {
 		log.debug("exchange started - url : {}", url);
 		
 		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url);
-		queryParams.entrySet().forEach(entry -> builder.queryParam(entry.getKey(), Arrays.asList(entry.getValue())));
+		queryParams.entrySet().forEach(entry -> builder.queryParam(entry.getKey(), entry.getValue()));
 		
 		if(tokenInfo != null) {
 			headers.add(HttpHeaders.AUTHORIZATION, BEARER_PREFIX + tokenInfo.getAccess_token()); // 토큰 정보를 헤더에 주입
@@ -77,7 +80,7 @@ public class RestUtil {
 		ResponseEntity<T> result;
 		
 		try {
-			result = restTemplate.exchange(builder.toUriString(), method, entity, clazz);
+			result = restTemplate.exchange(builder.build().toUri(), method, entity, clazz);
 		// 토큰이 만료됐을 경우 리프레시 토큰을 통해 재발급받는다
 		} catch (HttpClientErrorException.Unauthorized e) {
 			TokenUtil tokenUtil = CommonUtil.getBean(TokenUtil.class);
@@ -86,7 +89,7 @@ public class RestUtil {
 			headers.add(HttpHeaders.AUTHORIZATION, BEARER_PREFIX + refreshed.getAccess_token());
 			entity = new HttpEntity<Object>(bodyParam, headers);
 			
-			result = restTemplate.exchange(builder.toUriString(), method, entity, clazz);
+			result = restTemplate.exchange(builder.build().toUri(), method, entity, clazz);
 		}
 		
 		log.debug("exchange ended - url : {}", url);
@@ -103,7 +106,7 @@ public class RestUtil {
 		private HttpMethod method = HttpMethod.GET;
 		private HttpHeaders headers = new HttpHeaders();
 		private TokenInfo tokenInfo;
-		private Map<String, String[]> queryParams = new HashMap<>();
+		private Map<String, List<String>> queryParams = new LinkedHashMap<>();
 		private Object bodyParam;
 		
 		public RestUtilBuilder() {
@@ -112,6 +115,24 @@ public class RestUtil {
 		}
 
 		public RestUtilBuilder url(String url) {
+			
+			// url에 이미 쿼리 파라미터가 포함되어있는 경우, URLEncoding이 되어있을텐데 이상태로 그냥 넘어가게 되면 인코딩이 2번 되게 된다.
+			// 따라서 쿼리파라미터를 따로 추출한 후, queryParams 맵에 디코딩해서 넣어준다.
+			if(url.contains("?")) {
+				String[] arr = url.split("\\?");
+				url = arr[0];
+				String[] pairs = arr[1].split("&");
+				
+				for(String pair : pairs) {
+					arr = pair.split("=");
+					try {
+						this.queryParam(URLDecoder.decode(arr[0], "UTF-8"), URLDecoder.decode(arr[1], "UTF-8"));
+					} catch (UnsupportedEncodingException e) {
+						throw new RuntimeException(e);
+					}
+				}
+			}
+			
 			this.url = url;
 			return this;
 		}
@@ -187,11 +208,18 @@ public class RestUtil {
 		/** 
 		 * 쿼리파라미터를 key, value형태로 추가
 		 * @param key
-		 * @param values
+		 * @param value
 		 * @return
 		 */
-		public RestUtilBuilder queryParam(String key, String... values) {
-			queryParams.put(key, values);
+		public RestUtilBuilder queryParam(String key, String value) {
+			List<String> list = queryParams.get(key);
+			
+			if(list == null) {
+				list = new ArrayList<String>();
+				queryParams.put(key, list);
+			}
+			
+			list.add(value);
 			return this;
 		}
 		

@@ -52,7 +52,7 @@ public class User implements Serializable {
 	}
 	
 	@Builder
-	public User(Long idx, String name, String email, String principal, SocialType socialType, String pictureUrl,
+	private User(Long idx, String name, String email, String principal, SocialType socialType, String pictureUrl,
 			String uid, List<String> roles, LocalDateTime createdDate) {
 		this.idx = idx;
 		this.name = name;

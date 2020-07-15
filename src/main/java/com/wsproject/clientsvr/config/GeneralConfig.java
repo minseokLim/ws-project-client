@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestOperations;
 import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
@@ -14,6 +15,7 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
+import com.wsproject.clientsvr.util.ImmutableRestTemplate;
 
 /**
  * @author mslim
@@ -23,8 +25,8 @@ import com.google.gson.JsonParseException;
 public class GeneralConfig {
 	
 	@Bean
-	public RestTemplate restTemplate() {
-		return new RestTemplate();
+	public RestOperations restTemplate() {
+		return new ImmutableRestTemplate(new RestTemplate());
 	}
 	
 	@Bean

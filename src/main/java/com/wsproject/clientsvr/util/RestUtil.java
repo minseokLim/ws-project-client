@@ -13,7 +13,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.RestOperations;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.wsproject.clientsvr.dto.TokenInfo;
@@ -75,7 +75,7 @@ public class RestUtil {
 		
 		HttpEntity<Object> entity = new HttpEntity<Object>(bodyParam, headers);
 		
-		RestTemplate restTemplate = CommonUtil.getBean(RestTemplate.class);
+		RestOperations restTemplate = CommonUtil.getBean(RestOperations.class);
 		
 		ResponseEntity<T> result;
 		

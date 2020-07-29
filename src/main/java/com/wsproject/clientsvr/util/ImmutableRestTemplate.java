@@ -2,6 +2,7 @@ package com.wsproject.clientsvr.util;
 
 import java.net.URI;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import org.springframework.core.ParameterizedTypeReference;
@@ -26,7 +27,7 @@ public class ImmutableRestTemplate implements RestOperations {
 	private RestOperations restTemplate;
 	
 	public ImmutableRestTemplate(RestOperations restTemplate) {
-		this.restTemplate = restTemplate;
+		this.restTemplate = Objects.requireNonNull(restTemplate);
 	}
 
 	@Override

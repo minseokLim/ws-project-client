@@ -40,7 +40,6 @@ public class CommonUtil {
 			cookie.setPath(path);
 			response.addCookie(cookie);
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new RuntimeException(e);
 		}
 	}

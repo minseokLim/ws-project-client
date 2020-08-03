@@ -21,10 +21,17 @@ var commonJS = {
 	requestAtApi : function(apiUrl, callbackFunc, method, data) {
 		method = method || "GET"; // Set method to GET by default, if not specified
 		
+		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
+		
 		$.ajax({
 			url: '/api?apiUrl=' + encodeURIComponent(apiUrl),
             type: method,
             data: JSON.stringify(data),
+            beforeSend : function(xhr) {
+            	/*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+				xhr.setRequestHeader(header, token);
+            },
             async: false,
             contentType : "application/json; charset=UTF-8",
             success: function(result) {

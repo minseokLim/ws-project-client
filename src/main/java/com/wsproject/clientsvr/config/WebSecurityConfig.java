@@ -54,8 +54,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.deleteCookies("JSESSIONID", "userInfo", "tokenInfo")
 				.invalidateHttpSession(true)
 			.and()
-				.addFilterBefore(filter, CsrfFilter.class)
-				.csrf().disable();
+				.addFilterBefore(filter, CsrfFilter.class);
 	}
 	
 	/**

@@ -39,8 +39,8 @@ public class CommonUtil {
 			Cookie cookie = new Cookie(name, URLEncoder.encode(AESUtil.encrypt(value), "UTF-8"));
 			cookie.setPath(path);
 			response.addCookie(cookie);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
+		} catch (UnsupportedEncodingException e) {
+			throw new AssertionError("UTF-8 not supported");
 		}
 	}
 	
@@ -61,24 +61,27 @@ public class CommonUtil {
 	 * @param request
 	 * @param name
 	 * @return
-	 * @throws UnsupportedEncodingException
 	 */
-	public static String getCookie(HttpServletRequest request, String name) throws UnsupportedEncodingException {
+	public static String getCookie(HttpServletRequest request, String name) {
 		
-		String result = null;
-		
-		Cookie[] cookies = request.getCookies();
-		
-		if(cookies != null) {
-			for(Cookie cookie : cookies) {
-				if(cookie.getName().equals(name)) {
-					result = URLDecoder.decode(cookie.getValue(), "UTF-8");
-					break;
+		try {
+			String result = null;
+			
+			Cookie[] cookies = request.getCookies();
+			
+			if(cookies != null) {
+				for(Cookie cookie : cookies) {
+					if(cookie.getName().equals(name)) {
+						result = URLDecoder.decode(cookie.getValue(), "UTF-8");
+						break;
+					}
 				}
 			}
+			
+			return result;
+		} catch (UnsupportedEncodingException e) {
+			throw new AssertionError("UTF-8 not supported");
 		}
-		
-		return result;
 	}
 	
 	/** 

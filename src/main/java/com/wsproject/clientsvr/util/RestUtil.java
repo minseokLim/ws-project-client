@@ -116,26 +116,25 @@ public class RestUtil {
 		}
 
 		public RestUtilBuilder url(String url) {
-			
-			// url에 이미 쿼리 파라미터가 포함되어있는 경우, URLEncoding이 되어있을텐데 이상태로 그냥 넘어가게 되면 인코딩이 2번 되게 된다.
-			// 따라서 쿼리파라미터를 따로 추출한 후, queryParams 맵에 디코딩해서 넣어준다.
-			if(url.contains("?")) {
-				String[] arr = url.split("\\?");
-				url = arr[0];
-				String[] pairs = arr[1].split("&");
-				
-				for(String pair : pairs) {
-					arr = pair.split("=");
-					try {
+			try {
+				// url에 이미 쿼리 파라미터가 포함되어있는 경우, URLEncoding이 되어있을텐데 이상태로 그냥 넘어가게 되면 인코딩이 2번 되게 된다.
+				// 따라서 쿼리파라미터를 따로 추출한 후, queryParams 맵에 디코딩해서 넣어준다.
+				if(url.contains("?")) {
+					String[] arr = url.split("\\?");
+					url = arr[0];
+					String[] pairs = arr[1].split("&");
+					
+					for(String pair : pairs) {
+						arr = pair.split("=");
 						this.queryParam(URLDecoder.decode(arr[0], "UTF-8"), URLDecoder.decode(arr[1], "UTF-8"));
-					} catch (UnsupportedEncodingException e) {
-						throw new RuntimeException(e);
 					}
 				}
+				
+				this.url = url;
+				return this;
+			} catch (UnsupportedEncodingException e) {
+				throw new AssertionError("UTF-8 not supported");
 			}
-			
-			this.url = url;
-			return this;
 		}
 		
 		/** 

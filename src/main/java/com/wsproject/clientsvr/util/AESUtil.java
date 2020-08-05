@@ -39,7 +39,7 @@ public class AESUtil {
 			System.arraycopy(b, 0, keyBytes, 0, len);
 			keySpec = new SecretKeySpec(keyBytes, "AES");
 		} catch (UnsupportedEncodingException e) {
-			throw new RuntimeException(e);
+			throw new AssertionError("UTF-8 not supported");
 		}
 	}
 
@@ -51,7 +51,7 @@ public class AESUtil {
 			String enStr = new String(Base64.encodeBase64(encrypted));
 			return enStr;
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new AssertionError(e);
 		}
 	}
 	
@@ -62,7 +62,7 @@ public class AESUtil {
 			byte[] byteStr = Base64.decodeBase64(str.getBytes());
 			return new String(c.doFinal(byteStr), "UTF-8");
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw new AssertionError(e);
 		}
 	}
 }

@@ -20,7 +20,7 @@ import com.wsproject.clientsvr.util.CommonUtil;
 public class UserInfoInterceptor extends HandlerInterceptorAdapter {
 
 	@Override
-	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) {
 		
 		if(modelAndView != null) {
 			UserInfo userInfo = CommonUtil.extractObjFromCookie(CommonUtil.getCookie(request, "userInfo"), UserInfo.class);

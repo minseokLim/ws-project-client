@@ -1,9 +1,17 @@
 var commonJS = {
 	post_to_url : function(path, params) {
+		if(typeof params === 'undefined') {
+			params = new Object();
+		}
+	
+		var token = $("meta[name='_csrf']").attr("content");
+		var csrfParameter = $("meta[name='_csrf_parameter']").attr("content");
+		params[csrfParameter] = token;
+		
         var form = document.createElement("form");
         form.setAttribute("method", "post");
         form.setAttribute("action", path);
-     
+        
         //히든으로 값을 주입시킨다.
         for(var key in params) {
             var hiddenField = document.createElement("input");
